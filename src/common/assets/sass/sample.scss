@@ -1,0 +1,23 @@
+@mixin triangle($direction: bottom, $size: 3px, $color: #999) {
+  @if ($direction == top) {
+    border-color: transparent transparent $color transparent;
+    border-style: dashed dashed solid dashed;
+  } @else if ($direction: == right) {
+    border-color: transparent transparent transparent $color;
+    border-style: dashed dashed dashed solid;
+  } @else if ($direction:  == bottom) {
+    border-color: $color transparent transparent transparent;
+    border-style: solid dashed dashed dashed;
+  } @else {
+    border-color: transparent $color transparent transparent;
+    border-style: dashed solid dashed dashed;
+  }
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  border-width: $size;
+}
+
+.demo {
+  @include triangle(left);
+}
