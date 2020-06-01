@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import App from './index.vue'
 
+import './sass/index.scss'
+
 // new Vue({
 //   el: '#root',
 //   components: {
