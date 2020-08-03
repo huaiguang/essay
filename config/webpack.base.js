@@ -43,7 +43,7 @@ module.exports = options => ({
   plugins: [
     new HtmlWebpackPlugin({
       title: 'prototype',
-      template: path.join(__dirname, '../src/public/template.html'),
+      template: path.join(__dirname, '../src/common/template/template.html'),
       minify: {
         collapseBooleanAttributes: true,
         removeComments: true,

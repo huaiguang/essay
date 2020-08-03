@@ -11,27 +11,27 @@
  * @property {value} 打包的资源
  */
 function requireAll(options) {
-  const { directory, useSubdirectories, regExp } = options;
-  const context = require.context(directory, useSubdirectories, regExp);
-  const map = {};
+  const { directory, useSubdirectories, regExp } = options
+  const context = require.context(directory, useSubdirectories, regExp)
+  const map = {}
   context.keys().forEach(key => {
-    let route = key.substring(2);
-    map[route.replace(/.vue$/, '')] = context(key).default;
-  });
+    let route = key.substring(2)
+    map[route.replace(/.vue$/, '')] = context(key).default
+  })
 
-  return map;
+  return map
 }
 
 // const requireAll = context => {
-//   const map = {};
+//   const map = {}
 
 //   context.keys().forEach(key => {
-//     let route = key.substring(2);
+//     let route = key.substring(2)
 //     // 引入reg做成全局方法
-//     map[route.replace(/\.vue$/, '')] = context(key).default;
+//     map[route.replace(/\.vue$/, '')] = context(key).default
 //   })
 
-//   return map;
+//   return map
 // }
 
-export default requireAll;
+export default requireAll

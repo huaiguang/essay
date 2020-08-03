@@ -4,25 +4,25 @@
  * @return {array}          树结构数组
  */
 function transformTreeMenu(menusObj) {
-  const list = [];
+  const list = []
   for (let key in menusObj) {
     if (menusObj[key]) {
-      const tempObj = ergodic(menusObj[key]);
-      list.push(tempObj);
+      const tempObj = ergodic(menusObj[key])
+      list.push(tempObj)
     }
   }
-  return list;
+  return list
 
   function ergodic(obj) {
     if (obj.hasOwnProperty('submenus') && Object.keys(obj['submenus']).length > 0) {
       if (obj['children'] === undefined) {
-        obj['children'] = [];
+        obj['children'] = []
       }
       for (let key in obj['submenus']) {
-        obj['children'].push(obj['submenus'][key]);
-        ergodic(obj['submenus'][key]);
+        obj['children'].push(obj['submenus'][key])
+        ergodic(obj['submenus'][key])
       }
     }
-    return obj;
+    return obj
   }
 }

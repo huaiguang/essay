@@ -45,6 +45,7 @@
     "crypt-js": "^1.0.4",
     "encrypt": "0.0.1",
     "jquery": "^3.5.1",
+    "nprogress": "^0.2.0",
     "react": "^16.13.1",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
