@@ -27,7 +27,7 @@ httpService.interceptors.response.use(
  *  url:请求地址
  *  params:参数
  * */
-export function get(url, params = {}) {
+export function get(url, params, options = {}) {
   return new Promise((resolve, reject) => {
     httpService({
       url: url,
@@ -46,7 +46,7 @@ export function get(url, params = {}) {
  *  url:请求地址
  *  params:参数
  * */
-export function post(url, params = {}) {
+export function post(url, params, options = {}) {
   return new Promise((resolve, reject) => {
     httpService({
       url: url,
@@ -62,8 +62,8 @@ export function post(url, params = {}) {
 
 /*
  *  文件上传
- *  url:请求地址
- *  params:参数
+ *  url: 请求地址
+ *  params: 参数
  * */
 export function fileUpload(url, params = {}) {
   return new Promise((resolve, reject) => {

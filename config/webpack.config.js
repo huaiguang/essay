@@ -6,7 +6,6 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const isDev = process.env.NODE_ENV === 'development'
 const mode = isDev ? 'development' : 'production'
-console.log('isDev', isDev, mode)
 
 module.exports = {
   mode,
@@ -74,7 +73,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'prototype',
-      template: path.resolve(__dirname, '../src/common/template/template.html'),
+      template: path.resolve(__dirname, '../public/template.html'),
       minify: {
         collapseBooleanAttributes: true,
         removeComments: true,

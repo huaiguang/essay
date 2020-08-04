@@ -1,6 +1,6 @@
-import webpackBaseConfig from './webpack.config'
+const webpack = require('webpack')
 
-module.exports = webpackBaseConfig({
+module.exports = require('./webpack.config.base')({
   mode: 'development',
   module: {
     rules: [
