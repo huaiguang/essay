@@ -1,5 +1,5 @@
-const reg = {
+const REG = {
   //
 }
 
-export default reg
+export default REG

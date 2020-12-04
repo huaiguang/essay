@@ -19,7 +19,7 @@ function numSub(num1, num2) {
   return (parseInt(Number((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(2)) * 100) + ''
   // 下面两步乘100 造成了精度缺失
   //    console.log(((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision) * 100+'')
-  //   return ((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision) * 100+''
+  //    return ((num1 * baseNum - num2 * baseNum) / baseNum).toFixed(precision) * 100+''
 }
 
 // 加法

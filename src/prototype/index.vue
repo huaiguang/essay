@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import sunrise from './image/sunrise.jpeg'
+import sunrise from './static/image/sunrise.jpeg'
 
 export default {
   name: 'app',
