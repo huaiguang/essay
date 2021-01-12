@@ -4,16 +4,15 @@ const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const isDev = process.env.NODE_ENV === 'development'
-const mode = isDev ? 'development' : 'production'
 
 module.exports = {
-  mode,
+  mode: 'development',
   entry: path.resolve(__dirname, '../src/prototype/index.js'),
   output: {
     publicPath: '/',  // 控制打包生成的html中引用外部资源的路径方式
     path: path.resolve(__dirname, '../dist'),
-    filename: 'static/prototype/js/[name].js?v=[hash:6]'
+    filename: process.env.NODE_ENV === 'development' ?
+      'static/prototype/js/[name].js?v=[hash:6]' : 'static/prototype/js/[name].js?v=[contentHash:6]'
   },
   module: {
     rules: [
@@ -23,10 +22,9 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        // use: ['style-loader', 'css-loader']
         use: [
           {
-            loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader
+            loader: process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader
           },
           {
             loader: 'css-loader'
@@ -40,7 +38,7 @@ module.exports = {
         test: /\.scss$/,
         use: [
           {
-            loader: isDev ? 'style-loader' : MiniCssExtractPlugin.loader
+            loader: process.env.NODE_ENV === 'development' ? 'style-loader' : MiniCssExtractPlugin.loader
           },
           'css-loader',
           'sass-loader'
@@ -64,16 +62,24 @@ module.exports = {
           options: {
             limit: 8196,
             outputPath: 'static/prototype/images/',
-            name: '[name].[ext]?v=[hash:6]'
+            name: process.env.NODE_ENV === 'development' ? '[name].[ext]?v=[hash:6]' : '[name].[ext]?v=[contentHash:6]'
           }
         }]
       }
     ]
   },
   plugins: [
+    new VueLoaderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"development"'
+    }),
+    new MiniCssExtractPlugin({
+      filename: "static/prototype/css/[name].css?v=[hash:6]" // 提取出来的css文件路径以及命名
+    }),
     new HtmlWebpackPlugin({
       title: 'prototype',
       template: path.resolve(__dirname, '../public/template.html'),
+      filename: 'html/prototype/index.html',
       minify: {
         collapseBooleanAttributes: true,
         removeComments: true,
@@ -82,13 +88,8 @@ module.exports = {
         minifyJS: true,
         removeEmptyAttributes: true
       },
-      filename: 'html/prototype/index.html'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new VueLoaderPlugin(),
-    new MiniCssExtractPlugin({
-      filename: "static/prototype/css/[name].css?v=[hash:6]" // 提取出来的css文件路径以及命名
-    })
   ],
   devServer: {
     contentBase: path.resolve(__dirname, '../dist/'),

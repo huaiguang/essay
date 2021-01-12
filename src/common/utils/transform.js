@@ -1,7 +1,7 @@
 // 十六进制转字节
 function hexToBytes(hex) {
   const bytes = []
-  for (let c = 0 c < hex.length c += 2) {
+  for (let c = 0; c < hex.length; c += 2) {
     bytes.push(parseInt(hex.substr(c, 2), 16))
   }
   return bytes
@@ -10,7 +10,7 @@ function hexToBytes(hex) {
 // 字节转十六进制
 function bytesToHex(bytes) {
   const hex = []
-  for (let i = 0 i < bytes.length i++) {
+  for (let i = 0; i < bytes.length; i++) {
     hex.push((bytes[i] >>> 4).toString(16))
     hex.push((bytes[i] & 0xF).toString(16))
   }
@@ -21,7 +21,7 @@ function bytesToHex(bytes) {
 function strToBinary(str) {
   var result = []
   var list = str.split('')
-  for (var i = 0 i < list.length i++) {
+  for (var i = 0; i < list.length; i++) {
     if (i !== 0) {
       //加空格，分割二进制
       result.push(' ')
@@ -40,7 +40,7 @@ function binaryToStr(str) {
   //通过空格来分开二进制的字符
   var list = str.split(' ')
   const length = list.length
-  for (var i = 0 i < length i++) {
+  for (var i = 0; i < length; i++) {
     var item = list[i]
     // 取出原来的二进制 unicode
     var asciiCode = parseInt(item, 2)
@@ -58,7 +58,7 @@ function stringToByte(str) {
   var bytes = new Array()
   var len, c
   len = str.length
-  for (var i = 0 i < len i++) {
+  for (var i = 0; i < len; i++) {
     c = str.charCodeAt(i)
     if (c >= 0x010000 && c <= 0x10FFFF) {
       bytes.push(((c >> 18) & 0x07) | 0xF0)
@@ -86,13 +86,13 @@ function byteToString(arr) {
   }
   var str = '',
     _arr = arr
-  for (var i = 0 i < _arr.length i++) {
+  for (var i = 0; i < _arr.length; i++) {
     var one = _arr[i].toString(2),
       v = one.match(/^1+?(?=0)/)
     if (v && one.length == 8) {
       var bytesLength = v[0].length
       var store = _arr[i].toString(2).slice(7 - bytesLength)
-      for (var st = 1 st < bytesLength st++) {
+      for (var st = 1; st < bytesLength; st++) {
         store += _arr[st + i].toString(2).slice(2)
       }
       str += String.fromCharCode(parseInt(store, 2))
