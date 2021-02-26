@@ -10,11 +10,13 @@
  * @property {value} 打包的资源
  */
 function requireAll(options) {
-  const { directory, useSubdirectories, regExp } = options
-  const context = require.context(directory, useSubdirectories, regExp)
-  const map = {}
+  const { directory, useSubdirectories, regExp } = options,
+        context = require.context(directory, useSubdirectories, regExp),
+        map = {}
+
   context.keys().forEach(key => {
     let route = key.substring(2)
+
     map[route.replace(/.vue$/, '')] = context(key).default
   })
 

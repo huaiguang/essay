@@ -37,17 +37,23 @@
  */
 function debounce(fn, delay = 300, immediate = false) {
   let timer = null
-  return function() {
-    let context = this
-    let args = arguments
 
-    if (timer) clearTimeout(timer)
+  return function() {
+    let context = this,
+        args = arguments
+
+    if (timer) {
+      clearTimeout(timer)
+    }
     if (immediate) {
       const callNow = !timer
+
       timer = setTimeout(function() {
         timer = null
       }, delay)
-      if (callNow) fn.apply(context, args)
+      if (callNow) {
+        fn.apply(context, args)
+      }
     } else {
       timer = setTimeout(function() {
         fn.apply(context, args)
@@ -63,17 +69,19 @@ function debounce(fn, delay = 300, immediate = false) {
  * @param type 1 表时间戳版，2 表定时器版
  */
 function throttle(fn, delay, type) {
-  let previous
-  let timer = null
+  let previous,
+      timer = null
+
   if (type === 1) {
     previous = 0
   }
   return function() {
-    let context = this
-    let args = arguments
+    let context = this,
+        args = arguments
 
     if (type === 1) {
       let now = Date.now()
+
       if (now - previous > delay) {
         fn.apply(context, args)
         previous = now

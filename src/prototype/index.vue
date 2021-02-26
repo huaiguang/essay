@@ -1,7 +1,12 @@
 <template>
   <div>
-    <img class="banner" :src="sunrise">
-    <div class="wrapper">{{ msg }}</div>
+    <img
+      class="banner"
+      :src="sunrise"
+    >
+    <div class="wrapper">
+      {{ msg }}
+    </div>
   </div>
 </template>
 
@@ -9,7 +14,7 @@
 import sunrise from './static/image/sunrise.jpeg'
 
 export default {
-  name: 'app',
+  name: 'Index',
   data() {
     return {
       sunrise,

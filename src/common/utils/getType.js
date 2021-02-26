@@ -6,8 +6,9 @@
  * @returns {string} 传入参数的数据类型
  */
 function getType(obj) {
-  // '[object Object]'
+    // '[object Object]'
   let type = Object.prototype.toString.call(obj).slice(8, -1).toLowerCase()
+
   return type
 }
 

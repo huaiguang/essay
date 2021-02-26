@@ -10,25 +10,25 @@
  */
 function isType(type) {
   return function(obj) {
-    return {}.toString.call(obj) == "[object " + type + "]"
+    return {}.toString.call(obj) == '[object ' + type + ']'
   }
 }
 
-var isObject = isType("Object");
-var _maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC');
-var _defaultExpire = _maxExpireDate;
+var isObject = isType('Object'),
+    _maxExpireDate = new Date('Fri, 31 Dec 9999 23:59:59 UTC'),
+    _defaultExpire = _maxExpireDate,
 
-// https://github.com/jeromegn/Backbone.localStorage/blob/master/backbone.localStorage.js#L63
-var defaultSerializer = {
-  serialize: function(item) {
-    return JSON.stringify(item);
-  },
-  // fix for "illegal access" error on Android when JSON.parse is
-  // passed null
-  deserialize: function(data) {
-    return data && JSON.parse(data);
-  }
-};
+    // https://github.com/jeromegn/Backbone.localStorage/blob/master/backbone.localStorage.js#L63
+    defaultSerializer = {
+      'serialize': function(item) {
+        return JSON.stringify(item)
+      },
+        // fix for "illegal access" error on Android when JSON.parse is
+        // passed null
+      'deserialize': function(data) {
+        return data && JSON.parse(data)
+      }
+    }
 
 /**
  * 复制或者更新目标对象属性
@@ -38,8 +38,10 @@ var defaultSerializer = {
  * @returns {object} 复制了props属性的obj对象
  */
 function _extend(obj, props) {
-  for (var key in props) obj[key] = props[key];
-  return obj;
+  for (var key in props) {
+    obj[key] = props[key]
+  }
+  return obj
 }
 
 /**
@@ -51,31 +53,34 @@ function _extend(obj, props) {
  * made to add something to storage that exceeded the quota."
  */
 function _isStorageSupported(storage) {
-  var supported = false;
+  var supported = false
+
   if (storage && storage.setItem) {
-    supported = true;
-    var key = '__' + Math.round(Math.random() * 1e7);
+    supported = true
+    var key = '__' + Math.round(Math.random() * 1e7)
+
     try {
-      storage.setItem(key, key);
-      storage.removeItem(key);
+      storage.setItem(key, key)
+      storage.removeItem(key)
     } catch (err) {
-      supported = false;
+      supported = false
     }
   }
-  return supported;
+  return supported
 }
 
 // get storage instance
 function _getStorageInstance(storage) {
-  var type = typeof storage;
+  var type = typeof storage
+
   if (type === 'string' && window[storage] instanceof Storage) {
-    return window[storage];
+    return window[storage]
   }
-  return storage;
+  return storage
 }
 
 function _isValidDate(date) {
-  return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime());
+  return Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date.getTime())
 }
 
 /**
@@ -86,303 +91,316 @@ function _isValidDate(date) {
  * @returns 到期日期
  */
 function _getExpiresDate(expires, now) {
-  now = now || new Date();
+  now = now || new Date()
 
   if (typeof expires === 'number') {
     expires = expires === Infinity ?
-      _maxExpireDate : new Date(now.getTime() + expires * 1000);
+      _maxExpireDate : new Date(now.getTime() + expires * 1000)
   } else if (typeof expires === 'string') {
-    expires = new Date(expires);
+    expires = new Date(expires)
   }
 
   if (expires && !_isValidDate(expires)) {
-    throw new Error('`expires` parameter cannot be converted to a valid Date instance');
+    throw new Error('`expires` parameter cannot be converted to a valid Date instance')
   }
 
-  return expires;
+  return expires
 }
 
 // http://crocodillon.com/blog/always-catch-localstorage-security-and-quota-exceeded-errors
 function _isQuotaExceeded(e) {
-  var quotaExceeded = false;
+  var quotaExceeded = false
+
   if (e) {
     if (e.code) {
       switch (e.code) {
         case 22:
-          quotaExceeded = true;
-          break;
+          quotaExceeded = true
+          break
         case 1014:
-          // Firefox
+                // Firefox
           if (e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-            quotaExceeded = true;
+            quotaExceeded = true
           }
-          break;
+          break
       }
     } else if (e.number === -2147024882) {
-      // Internet Explorer 8
-      quotaExceeded = true;
+            // Internet Explorer 8
+      quotaExceeded = true
     }
   }
-  return quotaExceeded;
+  return quotaExceeded
 }
 
 // cache item constructor
 function CacheItemConstructor(value, exp) {
-  // createTime
-  this.c = (new Date()).getTime();
-  exp = exp || _defaultExpire;
-  var expires = _getExpiresDate(exp);
-  // expiresTime
-  this.e = expires.getTime();
-  this.v = value;
+    // createTime
+  this.c = new Date().getTime()
+  exp = exp || _defaultExpire
+  var expires = _getExpiresDate(exp)
+    // expiresTime
+
+  this.e = expires.getTime()
+  this.v = value
 }
 
 function _isCacheItem(item) {
   if (!isObject(item)) {
-    return false;
+    return false
   }
   if (item) {
     if ('c' in item && 'e' in item && 'v' in item) {
-      return true;
+      return true
     }
   }
-  return false;
+  return false
 }
 
 // check cacheItem If effective
 function _checkCacheItemIfEffective(cacheItem) {
-  var timeNow = (new Date()).getTime();
-  return timeNow < cacheItem.e;
+  var timeNow = new Date().getTime()
+
+  return timeNow < cacheItem.e
 }
 
 function _checkAndWrapKeyAsString(key) {
   if (typeof key !== 'string') {
-    console.warn(key + ' used as a key, but it is not a string.');
-    key = String(key);
+    console.warn(key + ' used as a key, but it is not a string.')
+    key = String(key)
   }
-  return key;
+  return key
 }
 
 // cache api
 var CacheAPI = {
 
-  set: function(key, value, options) {},
+  'set': function(key, value, options) {},
 
-  get: function(key) {},
+  'get': function(key) {},
 
-  delete: function(key) {},
-  // Try the best to clean All expires CacheItem.
-  deleteAllExpires: function() {},
-  // Clear all keys
-  clear: function() {},
-  // Add key-value item to memcached, success only when the key is not exists in memcached.
-  add: function(key, options) {},
-  // Replace the key's data item in cache, success only when the key's data item is exists in cache.
-  replace: function(key, value, options) {},
-  // Set a new options for an existing key.
-  touch: function(key, exp) {}
-};
+  'delete': function(key) {},
+        // Try the best to clean All expires CacheItem.
+  'deleteAllExpires': function() {},
+        // Clear all keys
+  'clear': function() {},
+        // Add key-value item to memcached, success only when the key is not exists in memcached.
+  'add': function(key, options) {},
+        // Replace the key's data item in cache, success only when the key's data item is exists in cache.
+  'replace': function(key, value, options) {},
+        // Set a new options for an existing key.
+  'touch': function(key, exp) {}
+},
 
-// cache api
-var CacheAPIImpl = {
+    // cache api
+    CacheAPIImpl = {
 
-  set: function(key, val, options) {
+      'set': function(key, val, options) {
 
-    key = _checkAndWrapKeyAsString(key);
+        key = _checkAndWrapKeyAsString(key)
 
-    options = _extend({
-      force: true
-    }, options);
+        options = _extend({
+          'force': true
+        }, options)
 
-    if (val === undefined) {
-      return this.delete(key);
-    }
-
-    var value = defaultSerializer.serialize(val);
-
-    var cacheItem = new CacheItemConstructor(value, options.exp);
-    try {
-      this.storage.setItem(key, defaultSerializer.serialize(cacheItem));
-    } catch (e) {
-      if (_isQuotaExceeded(e)) { //data wasn't successfully saved due to quota exceed so throw an error
-        this.quotaExceedHandler(key, value, options, e);
-      } else {
-        console.error(e);
-      }
-    }
-
-    return val;
-  },
-  get: function(key) {
-    key = _checkAndWrapKeyAsString(key);
-    var cacheItem = null;
-    try {
-      cacheItem = defaultSerializer.deserialize(this.storage.getItem(key));
-    } catch (e) {
-      return null;
-    }
-    if (_isCacheItem(cacheItem)) {
-      if (_checkCacheItemIfEffective(cacheItem)) {
-        var value = cacheItem.v;
-        return defaultSerializer.deserialize(value);
-      } else {
-        this.delete(key);
-      }
-    }
-    return null;
-  },
-
-  delete: function(key) {
-    key = _checkAndWrapKeyAsString(key);
-    this.storage.removeItem(key);
-    return key;
-  },
-  //清除所有过期的数据条目
-  deleteAllExpires: function() {
-    var length = this.storage.length;
-    var deleteKeys = [];
-    var _this = this;
-    for (var i = 0; i < length; i++) {
-      var key = this.storage.key(i);
-      var cacheItem = null;
-      try {
-        cacheItem = defaultSerializer.deserialize(this.storage.getItem(key));
-      } catch (e) {}
-
-      if (cacheItem !== null && cacheItem.e !== undefined) {
-        var timeNow = (new Date()).getTime();
-        if (timeNow >= cacheItem.e) {
-          deleteKeys.push(key);
+        if (val === undefined) {
+          return this.delete(key)
         }
-      }
-    }
-    deleteKeys.forEach(function(key) {
-      _this.delete(key);
-    });
-    return deleteKeys;
-  },
 
-  clear: function() {
-    this.storage.clear();
-  },
+        var value = defaultSerializer.serialize(val),
 
-  //这个方法只能添加key不存在的数据条，可以避免数据被无意之间篡改
-  add: function(key, value, options) {
-    key = _checkAndWrapKeyAsString(key);
-    options = _extend({
-      force: true
-    }, options);
-    try {
-      var cacheItem = defaultSerializer.deserialize(this.storage.getItem(key));
-      if (!_isCacheItem(cacheItem) || !_checkCacheItemIfEffective(cacheItem)) {
-        this.set(key, value, options);
-        return true;
-      }
-    } catch (e) {
-      this.set(key, value, options);
-      return true;
-    }
-    return false;
-  },
+            cacheItem = new CacheItemConstructor(value, options.exp)
 
-  replace: function(key, value, options) {
-    key = _checkAndWrapKeyAsString(key);
-    var cacheItem = null;
-    try {
-      cacheItem = defaultSerializer.deserialize(this.storage.getItem(key));
-    } catch (e) {
-      return false;
-    }
-    if (_isCacheItem(cacheItem)) {
-      if (_checkCacheItemIfEffective(cacheItem)) {
-        this.set(key, value, options);
-        return true;
-      } else {
-        this.delete(key);
+        try {
+          this.storage.setItem(key, defaultSerializer.serialize(cacheItem))
+        } catch (e) {
+          if (_isQuotaExceeded(e)) { //data wasn't successfully saved due to quota exceed so throw an error
+            this.quotaExceedHandler(key, value, options, e)
+          } else {
+            console.error(e)
+          }
+        }
+
+        return val
+      },
+      'get': function(key) {
+        key = _checkAndWrapKeyAsString(key)
+        var cacheItem = null
+
+        try {
+          cacheItem = defaultSerializer.deserialize(this.storage.getItem(key))
+        } catch (e) {
+          return null
+        }
+        if (_isCacheItem(cacheItem)) {
+          if (_checkCacheItemIfEffective(cacheItem)) {
+            var value = cacheItem.v
+
+            return defaultSerializer.deserialize(value)
+          }
+          this.delete(key)
+
+        }
+        return null
+      },
+
+      'delete': function(key) {
+        key = _checkAndWrapKeyAsString(key)
+        this.storage.removeItem(key)
+        return key
+      },
+        //清除所有过期的数据条目
+      'deleteAllExpires': function() {
+        var length = this.storage.length,
+            deleteKeys = [],
+            _this = this
+
+        for (var i = 0; i < length; i++) {
+          var key = this.storage.key(i),
+              cacheItem = null
+
+          try {
+            cacheItem = defaultSerializer.deserialize(this.storage.getItem(key))
+          } catch (e) {}
+
+          if (cacheItem !== null && cacheItem.e !== undefined) {
+            var timeNow = new Date().getTime()
+
+            if (timeNow >= cacheItem.e) {
+              deleteKeys.push(key)
+            }
+          }
+        }
+        deleteKeys.forEach(function(key) {
+          _this.delete(key)
+        })
+        return deleteKeys
+      },
+
+      'clear': function() {
+        this.storage.clear()
+      },
+
+        //这个方法只能添加key不存在的数据条，可以避免数据被无意之间篡改
+      'add': function(key, value, options) {
+        key = _checkAndWrapKeyAsString(key)
+        options = _extend({
+          'force': true
+        }, options)
+        try {
+          var cacheItem = defaultSerializer.deserialize(this.storage.getItem(key))
+
+          if (!_isCacheItem(cacheItem) || !_checkCacheItemIfEffective(cacheItem)) {
+            this.set(key, value, options)
+            return true
+          }
+        } catch (e) {
+          this.set(key, value, options)
+          return true
+        }
+        return false
+      },
+
+      'replace': function(key, value, options) {
+        key = _checkAndWrapKeyAsString(key)
+        var cacheItem = null
+
+        try {
+          cacheItem = defaultSerializer.deserialize(this.storage.getItem(key))
+        } catch (e) {
+          return false
+        }
+        if (_isCacheItem(cacheItem)) {
+          if (_checkCacheItemIfEffective(cacheItem)) {
+            this.set(key, value, options)
+            return true
+          }
+          this.delete(key)
+
+        }
+        return false
+      },
+        //重新设置每条数据的过期时间
+      'touch': function(key, exp) {
+        key = _checkAndWrapKeyAsString(key)
+        var cacheItem = null
+
+        try {
+          cacheItem = defaultSerializer.deserialize(this.storage.getItem(key))
+        } catch (e) {
+          return false
+        }
+        if (_isCacheItem(cacheItem)) {
+          if (_checkCacheItemIfEffective(cacheItem)) {
+            this.set(key, this.get(key), {
+              'exp': exp
+            })
+            return true
+          }
+          this.delete(key)
+
+        }
+        return false
       }
     }
-    return false;
-  },
-  //重新设置每条数据的过期时间
-  touch: function(key, exp) {
-    key = _checkAndWrapKeyAsString(key);
-    var cacheItem = null;
-    try {
-      cacheItem = defaultSerializer.deserialize(this.storage.getItem(key));
-    } catch (e) {
-      return false;
-    }
-    if (_isCacheItem(cacheItem)) {
-      if (_checkCacheItemIfEffective(cacheItem)) {
-        this.set(key, this.get(key), {
-          exp: exp
-        });
-        return true;
-      } else {
-        this.delete(key);
-      }
-    }
-    return false;
-  }
-};
 
 /**
  * Cache Constructor
  */
 function CacheConstructor(options) {
 
-  // default options
+    // default options
   var defaults = {
-    storage: 'localStorage',
-    exp: Infinity //An expiration time, in seconds. default never .
-  };
+    'storage': 'localStorage',
+    'exp': Infinity //An expiration time, in seconds. default never .
+  },
 
-  var opt = _extend(defaults, options);
+      opt = _extend(defaults, options),
 
-  var expires = opt.exp;
+      expires = opt.exp
 
   if (expires && typeof expires !== 'number' && !_isValidDate(expires)) {
-    throw new Error('Constructor `exp` parameter cannot be converted to a valid Date instance');
+    throw new Error('Constructor `exp` parameter cannot be converted to a valid Date instance')
   } else {
-    _defaultExpire = expires;
+    _defaultExpire = expires
   }
 
-  var storage = _getStorageInstance(opt.storage);
+  var storage = _getStorageInstance(opt.storage),
 
-  var isSupported = _isStorageSupported(storage);
+      isSupported = _isStorageSupported(storage)
 
 
   this.isSupported = function() {
-    return isSupported;
-  };
+    return isSupported
+  }
 
   if (isSupported) {
 
-    this.storage = storage;
+    this.storage = storage
 
     this.quotaExceedHandler = function(key, val, options, e) {
-      console.warn('Quota exceeded!');
+      console.warn('Quota exceeded!')
       if (options && options.force === true) {
-        var deleteKeys = this.deleteAllExpires();
-        console.warn('delete all expires CacheItem : [' + deleteKeys + '] and try execute `set` method again!');
+        var deleteKeys = this.deleteAllExpires()
+
+        console.warn('delete all expires CacheItem : [' + deleteKeys + '] and try execute `set` method again!')
         try {
-          options.force = false;
-          this.set(key, val, options);
+          options.force = false
+          this.set(key, val, options)
         } catch (err) {
-          console.warn(err);
+          console.warn(err)
         }
       }
-    };
+    }
 
   } else { // if not support, rewrite all functions without doing anything
-    _extend(this, CacheAPI);
+    _extend(this, CacheAPI)
   }
 
 }
 
-CacheConstructor.prototype = CacheAPIImpl;
+CacheConstructor.prototype = CacheAPIImpl
 CacheConstructor.getInstance = function(opt) {
-  return new CacheConstructor(opt);
+  return new CacheConstructor(opt)
 }
 
-export default CacheConstructor;
+export default CacheConstructor

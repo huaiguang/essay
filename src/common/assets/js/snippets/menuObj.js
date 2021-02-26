@@ -5,22 +5,24 @@
  */
 function transformTreeMenu(menusObj) {
   const list = []
+
   for (let key in menusObj) {
     if (menusObj[key]) {
       const tempObj = ergodic(menusObj[key])
+
       list.push(tempObj)
     }
   }
   return list
 
   function ergodic(obj) {
-    if (obj.hasOwnProperty('submenus') && Object.keys(obj['submenus']).length > 0) {
-      if (obj['children'] === undefined) {
-        obj['children'] = []
+    if (obj.hasOwnProperty('submenus') && Object.keys(obj.submenus).length > 0) {
+      if (obj.children === undefined) {
+        obj.children = []
       }
-      for (let key in obj['submenus']) {
-        obj['children'].push(obj['submenus'][key])
-        ergodic(obj['submenus'][key])
+      for (let key in obj.submenus) {
+        obj.children.push(obj.submenus[key])
+        ergodic(obj.submenus[key])
       }
     }
     return obj

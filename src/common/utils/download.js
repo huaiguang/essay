@@ -6,12 +6,12 @@
  */
 function downloadByElemA({ url, name } = {}) {
   const elemA = document.createElement('a')
+
   elemA.href = url
   elemA.download = name
   document.body.appendChild(elemA)
   elemA.click()
   document.body.removeChild(elemA)
-  elemA = null
 }
 
 /**
@@ -21,8 +21,9 @@ function downloadByElemA({ url, name } = {}) {
  * @return {[void]}     [description]
  */
 function savePic(url, fileName) {
-  const img = new Image()
-  const canvas = document.createElement('canvas')
+  const img = new Image(),
+        canvas = document.createElement('canvas')
+
   img.onload = function() {
     // this 指向 img 对象，如下：
     // <img crossorigin="Anonymous" src="https://www.baidu.com/img/PCdoodle_dce011f4f164006d915e4e122012c428.png">
@@ -30,11 +31,12 @@ function savePic(url, fileName) {
     canvas.width = this.width
     canvas.height = this.height
     const context = canvas.getContext('2d')
+
     context.drawImage(this, 0, 0)
 
     downloadByElemA({
-      url: canvas.toDataURL('image/png'),
-      name: fileName
+      'url': canvas.toDataURL('image/png'),
+      'name': fileName
     })
   }
   img.crossOrigin = 'Anonymous'
@@ -48,15 +50,16 @@ function savePic(url, fileName) {
  * @return void
  */
 function downLocalImage(img, name) {
-  const img = document.querySelector('img')
   const canvas = document.createElement('canvas')
+
   canvas.width = img.width
   canvas.height = img.height
   const context = canvas.getContext('2d')
+
   context.drawImage(img, 0, 0, img.width, img.height)
   downloadByElemA({
-    url: canvas.toDataURL('image/png'),
-    name: name
+    'url': canvas.toDataURL('image/png'),
+    'name': name
   })
 }
 
@@ -67,11 +70,12 @@ function downLocalImage(img, name) {
  * @return void
  */
 function saveAs(data, name) {
-  var urlObject = window.URL || window.webkitURL || window
-  var export_blob = new Blob([data])
-  // download the file
+  var urlObject = window.URL || window.webkitURL || window,
+      export_blob = new Blob([data])
+    // download the file
+
   downloadByElemA({
-    url: urlObject.createObjectURL(export_blob),
-    name: name
+    'url': urlObject.createObjectURL(export_blob),
+    'name': name
   })
 }

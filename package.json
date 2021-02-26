@@ -4,6 +4,8 @@
   "description": "informal essay",
   "main": "index.js",
   "scripts": {
+    "eslint": "eslint ./src --quiet",
+    "eslint:fix": "eslint ./src --fix --quiet",
     "test": "cross-env NODE_ENV=development webpack --config build/webpack.config.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config build/webpack.config.dev.js",
     "build": "cross-env NODE_ENV=production node build/build.js"
@@ -20,9 +22,12 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/runtime": "^7.11.0",
     "autoprefixer": "^9.8.6",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "cross-env": "^7.0.2",
     "css-loader": "^4.2.0",
+    "eslint": "^7.20.0",
+    "eslint-plugin-vue": "^7.6.0",
     "file-loader": "^6.0.0",
     "glob": "^7.1.6",
     "html-webpack-plugin": "^4.3.0",

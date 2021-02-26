@@ -4,7 +4,9 @@ import Vue from 'vue'
 const Loading = {}
 
 Loading.show = () => {
-  if (document.querySelector('.wrap-loading')) return
+  if (document.querySelector('.wrap-loading')) {
+    return
+  }
   const loadingTpl = `
     <div class="wrap-loading">
       <div class="van-loading van-loading--circular">
@@ -16,13 +18,14 @@ Loading.show = () => {
         <span class="van-loading__text" style="font-size: .16rem; line-height: .3rem;">加载中...</span>
       </div>
     </div>
-  `
-  const LoadingTip = Vue.extend({
-    template: loadingTpl
-  })
-  const loadingTemplate = new LoadingTip().$mount().$el
+  `,
+        LoadingTip = Vue.extend({
+          'template': loadingTpl
+        }),
+        loadingTemplate = new LoadingTip().$mount().$el
+
   document.body.appendChild(loadingTemplate)
-  // 防止遮罩滑动
+    // 防止遮罩滑动
   document.querySelector('.wrap-loading').addEventListener('touchmove', function(e) {
     e.preventDefault()
     e.stopPropagation()
@@ -31,6 +34,7 @@ Loading.show = () => {
 
 Loading.hide = () => {
   const template = document.querySelector('.wrap-loading')
+
   if (template) {
     document.body.removeChild(template)
   }
@@ -39,20 +43,24 @@ Loading.hide = () => {
 // 避免重复 install, 设立 flag
 Loading.installed = false
 Loading.install = function(Vue) {
-  if (Loading.installed) return
+  if (Loading.installed) {
+    return
+  }
   Vue.prototype.$loading = {}
 
   Vue.prototype.$loading.show = () => {
     // 如果页面有 loading，则不再重复执行
-    if (document.querySelector('.wrap-loading')) return
-    // 创建loading模版
+    if (document.querySelector('.wrap-loading')) {
+      return
+    }
+        // 创建loading模版
     const LoadingTip = Vue.extend({
-      // template: `
-      //   <div class="wrap-loading">
-      //     <div class="loader"></div>
-      //   </div>
-      // `
-      template: `
+            // template: `
+            //   <div class="wrap-loading">
+            //     <div class="loader"></div>
+            //   </div>
+            // `
+      'template': `
         <div class="wrap-loading">
           <div class="van-loading van-loading--circular">
             <span class="van-loading__spinner van-loading__spinner--circular" style="width: .3rem; height: .3rem;">
@@ -64,11 +72,12 @@ Loading.install = function(Vue) {
           </div>
         </div>
       `
-    })
-    // 创建实例，挂载到文档
-    const loadingTemplate = new LoadingTip().$mount().$el
+    }),
+            // 创建实例，挂载到文档
+          loadingTemplate = new LoadingTip().$mount().$el
+
     document.body.appendChild(loadingTemplate)
-    // 防止遮罩滑动
+        // 防止遮罩滑动
     document.querySelector('.wrap-loading').addEventListener('touchmove', function(e) {
       e.preventDefault()
       e.stopPropagation()
@@ -78,6 +87,7 @@ Loading.install = function(Vue) {
 
   Vue.prototype.$loading.hide = () => {
     const template = document.querySelector('.wrap-loading')
+
     if (template) {
       document.body.removeChild(template)
     }
