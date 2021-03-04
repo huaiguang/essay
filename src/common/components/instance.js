@@ -12,8 +12,8 @@ export default {
       },
       // 当绑定元素插入到 DOM 中
       inserted(el, binding, vnode, oldVnode) {
-
-      }，
+        console.log(el)
+      },
       update() {},
       componentUpdated() {},
       unbind() {}
@@ -29,7 +29,7 @@ export default {
 
     // 4. 添加实例方法，通过把它们添加到 Vue.prototype 上实现
     // 如果需要在组件的基础上编写插件，我们可以使用Vue.extend(Component)
-    Vue.prototype.$myMethod = function(options) {
+    Vue.prototype.$myMethod = function() {
       // 逻辑...
     }
   }

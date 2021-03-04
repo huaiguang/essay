@@ -4,16 +4,6 @@
  * @return {array}          树结构数组
  */
 function transformTreeMenu(menusObj) {
-  const list = []
-
-  for (let key in menusObj) {
-    if (menusObj[key]) {
-      const tempObj = ergodic(menusObj[key])
-
-      list.push(tempObj)
-    }
-  }
-  return list
 
   function ergodic(obj) {
     if (obj.hasOwnProperty('submenus') && Object.keys(obj.submenus).length > 0) {
@@ -27,4 +17,16 @@ function transformTreeMenu(menusObj) {
     }
     return obj
   }
+
+  const list = []
+
+  for (let key in menusObj) {
+    if (menusObj[key]) {
+      const tempObj = ergodic(menusObj[key])
+
+      list.push(tempObj)
+    }
+  }
+  return list
+
 }

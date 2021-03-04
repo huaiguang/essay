@@ -15,7 +15,7 @@
 //   }
 // }
 
-// function throllte(fn, delay) {
+// function throttle(fn, delay) {
 //   let previous = 0
 //   return function() {
 //     let context = this

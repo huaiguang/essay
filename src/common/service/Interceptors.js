@@ -1,19 +1,4 @@
-class Interceptors = (
-  {
-    beforeRequest = [],
-    afterResponse = []
-  } = {}
-) {
-  this.beforeRequest = [
-    config => {
-      if (beforeRequest[0]) {
-        beforeRequest[0]()
-      }
-    }
-  ]
-}
-
-class Interceptors = {
+class Interceptors {
   constructor(
     beforeRequest = [],
     afterResponse = []
@@ -23,7 +8,8 @@ class Interceptors = {
         if (beforeRequest[0]) {
           beforeRequest[0](config)
         } else {
-          const token = localStorage.get('token')
+          const token = localStorage.getItem('token')
+
           if (token) {
             config.headers['User-Token'] = ''
           }

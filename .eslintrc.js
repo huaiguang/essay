@@ -56,7 +56,7 @@ module.exports = {
     // http://eslint.org/docs/rules/comma-style
     'comma-style': [2, 'last'],
     // 圈复杂度
-    'complexity': [2, 9],
+    'complexity': 2,
     // 以方括号取对象属性时，[ 后面和 ] 前面是否需要空格, 可选参数 never, always
     'computed-property-spacing': [2, 'never'],
     // 强制方法必须返回值，TypeScript强类型，不配置
@@ -114,7 +114,7 @@ module.exports = {
     'no-dupe-args': 2, //函数参数不能重复
     'no-duplicate-case': 2, //switch中的case标签不能重复
     'no-else-return': 2, //如果if语句里面有return,后面不能跟else语句
-    'no-empty': 2, //块语句中的内容不能为空
+    'no-empty': [2, { 'allowEmptyCatch': true }], //块语句中的内容不能为空
     'no-empty-character-class': 2, //正则表达式中的[]内容不能为空
     'no-eq-null': 2, //禁止对null使用==或!=运算符
     'no-eval': 1, //禁止使用eval
@@ -132,7 +132,7 @@ module.exports = {
     'no-inline-comments': 0, //禁止行内备注
     'no-inner-declarations': [2, 'functions'], //禁止在块语句中使用声明（变量或函数）
     'no-invalid-regexp': 2, //禁止无效的正则表达式
-    'no-invalid-this': 2, //禁止无效的this，只能用在构造器，类，对象字面量
+    'no-invalid-this': 1, //禁止无效的this，只能用在构造器，类，对象字面量
     'no-irregular-whitespace': 2, //不能有不规则的空格
     'no-iterator': 2, //禁止使用__iterator__ 属性
     'no-label-var': 2, //label名不能与var声明的变量名相同
@@ -186,12 +186,17 @@ module.exports = {
     'no-throw-literal': 2, //禁止抛出字面量错误 throw "error";
     'no-undef': 1, //不能有未定义的变量
     'no-undef-init': 2, //变量初始化时不能直接给它赋值为undefined
-    'no-undefined': 1, //不能使用undefined
+    'no-undefined': 0, //不能使用undefined
     'no-unexpected-multiline': 2, //避免多行表达式
-    'no-underscore-dangle': 1, //标识符不能以_开头或结尾
-    'no-unneeded-ternary': 2, //禁止不必要的嵌套 var isYes = answer === 1 ? true : false;
+    'no-underscore-dangle': 0, // 标识符不能以_开头或结尾
+    'no-unneeded-ternary': 2, // 禁止不必要的嵌套 var isYes = answer === 1 ? true : false;
     'no-unreachable': 2, //不能有无法执行的代码
-    'no-unused-expressions': 2, //禁止无用的表达式
+    'no-unused-expressions': [
+      2,
+      {
+        allowShortCircuit: true
+      }
+    ], //禁止无用的表达式
     'no-unused-vars': [
       1,
       {
@@ -240,7 +245,7 @@ module.exports = {
     'newline-after-var': 2, //变量声明后是否需要空一行
     'object-curly-spacing': [0, 'never'], //大括号内是否允许不必要的空格
     'object-shorthand': 0, //强制对象字面量缩写语法
-    'one-var': 1, //连续声明
+    'one-var': 0, //连续声明
     'operator-assignment': [0, 'always'], //赋值运算符 += -=什么的
     'operator-linebreak': [2, 'after'], //换行时运算符在行尾还是行首
     'padded-blocks': 0, //块语句内行首行尾是否要空行

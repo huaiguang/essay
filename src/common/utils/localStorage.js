@@ -10,7 +10,7 @@
  */
 function isType(type) {
   return function(obj) {
-    return {}.toString.call(obj) == '[object ' + type + ']'
+    return {}.toString.call(obj) === '[object ' + type + ']'
   }
 }
 
@@ -270,8 +270,8 @@ var CacheAPI = {
             }
           }
         }
-        deleteKeys.forEach(function(key) {
-          _this.delete(key)
+        deleteKeys.forEach(function(subKey) {
+          _this.delete(subKey)
         })
         return deleteKeys
       },
@@ -377,15 +377,15 @@ function CacheConstructor(options) {
 
     this.storage = storage
 
-    this.quotaExceedHandler = function(key, val, options, e) {
+    this.quotaExceedHandler = function(key, val, config, e) {
       console.warn('Quota exceeded!')
-      if (options && options.force === true) {
+      if (config && config.force === true) {
         var deleteKeys = this.deleteAllExpires()
 
         console.warn('delete all expires CacheItem : [' + deleteKeys + '] and try execute `set` method again!')
         try {
-          options.force = false
-          this.set(key, val, options)
+          config.force = false
+          this.set(key, val, config)
         } catch (err) {
           console.warn(err)
         }

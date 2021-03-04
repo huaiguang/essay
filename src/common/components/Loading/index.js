@@ -42,19 +42,19 @@ Loading.hide = () => {
 
 // 避免重复 install, 设立 flag
 Loading.installed = false
-Loading.install = function(Vue) {
+Loading.install = function(vue) {
   if (Loading.installed) {
     return
   }
-  Vue.prototype.$loading = {}
+  vue.prototype.$loading = {}
 
-  Vue.prototype.$loading.show = () => {
+  vue.prototype.$loading.show = () => {
     // 如果页面有 loading，则不再重复执行
     if (document.querySelector('.wrap-loading')) {
       return
     }
         // 创建loading模版
-    const LoadingTip = Vue.extend({
+    const LoadingTip = vue.extend({
             // template: `
             //   <div class="wrap-loading">
             //     <div class="loader"></div>
@@ -85,7 +85,7 @@ Loading.install = function(Vue) {
     Loading.installed = true
   }
 
-  Vue.prototype.$loading.hide = () => {
+  vue.prototype.$loading.hide = () => {
     const template = document.querySelector('.wrap-loading')
 
     if (template) {

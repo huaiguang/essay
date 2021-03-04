@@ -45,6 +45,7 @@ function dateFormat(date, pattern) {
         return padding(date.getMinutes(), $0.length)
       case 's':
         return padding(date.getSeconds(), $0.length)
+      // no default
     }
   })
 }
@@ -85,6 +86,7 @@ function dateParse(dateString, pattern) {
         case 's':
           _date.setSeconds(_int)
           break
+        // no default
       }
     }
     return _date
