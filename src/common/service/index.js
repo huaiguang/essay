@@ -4,21 +4,16 @@ import Interceptors from './Interceptors'
 
 // 创建axios实例
 const httpService = axios.create({
-  'baseURL': 'http://localhost:8081', // url前缀
-  'timeout': 3000 // 请求超时时间
-}),
-
-      interceptors = new Interceptors({})
+  baseURL: 'http://localhost:8081', // url前缀
+  timeout: 3000 // 请求超时时间
+})
+const interceptors = new Interceptors({})
 
 // request拦截器
-httpService.interceptors.request.use(
-  ...interceptors.beforeRequest
-)
+httpService.interceptors.request.use(...interceptors.beforeRequest)
 
-// respone拦截器
-httpService.interceptors.response.use(
-  ...interceptors.afterResponse
-)
+// response拦截器
+httpService.interceptors.response.use(...interceptors.afterResponse)
 
 /*网络请求部分*/
 
@@ -30,14 +25,16 @@ httpService.interceptors.response.use(
 export function get(url, params, options = {}) {
   return new Promise((resolve, reject) => {
     httpService({
-      'url': url,
-      'method': 'get',
-      'params': params
-    }).then(response => {
-      resolve(response)
-    }).catch(error => {
-      reject(error)
+      url: url,
+      method: 'get',
+      params: params
     })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
 }
 
@@ -49,14 +46,16 @@ export function get(url, params, options = {}) {
 export function post(url, params, options = {}) {
   return new Promise((resolve, reject) => {
     httpService({
-      'url': url,
-      'method': 'post',
-      'data': params
-    }).then(response => {
-      resolve(response)
-    }).catch(error => {
-      reject(error)
+      url: url,
+      method: 'post',
+      data: params
     })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
 }
 
@@ -68,15 +67,17 @@ export function post(url, params, options = {}) {
 export function fileUpload(url, params = {}) {
   return new Promise((resolve, reject) => {
     httpService({
-      'url': url,
-      'method': 'post',
-      'data': params,
-      'headers': { 'Content-Type': 'multipart/form-data' }
-    }).then(response => {
-      resolve(response)
-    }).catch(error => {
-      reject(error)
+      url: url,
+      method: 'post',
+      data: params,
+      headers: { 'Content-Type': 'multipart/form-data' }
     })
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
 }
 
