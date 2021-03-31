@@ -5,6 +5,7 @@ const packageConfig = require('../package.json')
 
 exports.assetsPath = function (_path) {
   const assetsDirectory = process.env.NODE_ENV === 'production' ? config.build.assetsDirectory : config.dev.assetsDirectory
+
   return path.posix.join(assetsDirectory, _path)
 }
 
@@ -39,9 +40,9 @@ exports.cssLoaders = function(options) {
 
     if (options.extract) {
       return MiniCssExtractPlugin.loader
-    } else {
-      return ['vue-style-loader'].concat(loaders)
     }
+    return ['vue-style-loader'].concat(loaders)
+
   }
 
   return {
@@ -69,6 +70,7 @@ exports.styleLoaders = function (options) {
 
   for (const extension in loaders) {
     const loader = loaders[extension]
+
     output.push({
       test: new RegExp('\\.' + extension + '$'),
       use: loader
@@ -82,7 +84,7 @@ exports.createNotifierCallback = () => {
   const notifier = require('node-notifier')
 
   return (severity, errors) => {
-    if (severity !== 'error') return
+    if (severity !== 'error') {return}
 
     const error = errors[0]
     const filename = error.file && error.file.split('!').pop()

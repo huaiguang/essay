@@ -13,8 +13,8 @@ var SIGN_REGEXP = /([yMdhms])(\1*)/g,
  * @return {[string]}     [add extra 0 to the left of the s]
  */
 function padding(s, len) {
-  var newLen = len - String(s).length,
-      newStr
+  var newStr = String(s),
+      newLen = len - newStr.length
 
   for (var i = 0; i < newLen; i++) {
     newStr = '0' + s
