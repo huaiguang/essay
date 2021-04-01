@@ -40,7 +40,7 @@ function debounce(fn, delay = 300, immediate = false) {
 
   return function() {
     let context = this,
-        args = arguments
+      args = arguments
 
     if (timer) {
       clearTimeout(timer)
@@ -70,14 +70,14 @@ function debounce(fn, delay = 300, immediate = false) {
  */
 function throttle(fn, delay, type) {
   let previous,
-      timer = null
+    timer = null
 
   if (type === 1) {
     previous = 0
   }
   return function() {
     let context = this,
-        args = arguments
+      args = arguments
 
     if (type === 1) {
       let now = Date.now()
@@ -97,8 +97,4 @@ function throttle(fn, delay, type) {
   }
 }
 
-
-export {
-  debounce,
-  throttle
-}
+export { debounce, throttle }

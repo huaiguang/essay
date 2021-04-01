@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: ['plugin:vue/essential', 'plugin:vue/recommended'],
+  extends: ['plugin:vue/recommended'],
   parserOptions: {
     parser: 'babel-eslint'
   },
@@ -13,14 +13,13 @@ module.exports = {
       2,
       {
         SwitchCase: 1,
-        VariableDeclarator: 'first',
+        VariableDeclarator: 1,
         MemberExpression: 1,
-        FunctionDeclaration: { body: 1, parameters: 2 },
+        FunctionDeclaration: { body: 1, parameters: 1 },
         CallExpression: { arguments: 1 },
         ArrayExpression: 1,
         ObjectExpression: 1,
-        ImportDeclaration: 1,
-        ignoreComments: true
+        ImportDeclaration: 1
       }
     ],
     // "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
@@ -122,7 +121,7 @@ module.exports = {
     'no-extend-native': 2, //禁止扩展native对象
     'no-extra-bind': 2, //禁止不必要的函数绑定
     'no-extra-boolean-cast': 2, //禁止不必要的bool转换
-    'no-extra-parens': 2, //禁止非必要的括号
+    // 'no-extra-parens': 2, //禁止非必要的括号
     'no-extra-semi': 2, //禁止多余的冒号
     'no-fallthrough': 1, //禁止switch穿透
     'no-floating-decimal': 2, //禁止省略浮点数中的0 .5 3.
@@ -242,7 +241,13 @@ module.exports = {
     'max-statements': [0, 10], //函数内最多有几个声明
     'new-cap': 2, //函数名首行大写必须使用new方式调用，首行小写必须用不带new方式调用
     'new-parens': 2, //new时必须加小括号
-    'newline-after-var': 2, //变量声明后是否需要空一行
+    // [deprecated]
+    // 'newline-after-var': 2, //变量声明后是否需要空一行
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*'},
+      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var']}
+    ],
     'object-curly-spacing': [0, 'never'], //大括号内是否允许不必要的空格
     'object-shorthand': 0, //强制对象字面量缩写语法
     'one-var': 0, //连续声明
@@ -285,14 +290,12 @@ module.exports = {
     'valid-typeof': 2, //必须使用合法的typeof的值
     'wrap-iife': [2, 'inside'], //立即执行函数表达式的小括号风格
     'wrap-regex': 0, //正则表达式字面量用小括号包起来
-    yoda: [2, 'never'] //禁止尤达条件
-  },
-  overrides: [
-    {
-      files: ['**/__tests__/*.{j,t}s?(x)', '**/tests/unit/**/*.spec.{j,t}s?(x)'],
-      env: {
-        mocha: true
-      }
-    }
-  ]
+    yoda: [2, 'never'], //禁止尤达条件
+    'vue/html-self-closing': 0,
+    'vue/max-attributes-per-line': 0,
+    'vue/singleline-html-element-content-newline': 0,
+    'vue/attributes-order': 0,
+    // deprecated
+    'vue/no-reserved-keys': 0
+  }
 }

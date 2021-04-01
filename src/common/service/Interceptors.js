@@ -1,8 +1,5 @@
 class Interceptors {
-  constructor(
-    beforeRequest = [],
-    afterResponse = []
-  ) {
+  constructor(beforeRequest = [], afterResponse = []) {
     this.beforeRequest = [
       config => {
         if (beforeRequest[0]) {
@@ -37,7 +34,11 @@ class Interceptors {
         if (afterResponse[1]) {
           afterResponse[1](error)
         } else {
-          if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1 && !error.config._retry) {
+          if (
+            error.code === 'ECONNABORTED' &&
+            error.message.indexOf('timeout') !== -1 &&
+            !error.config._retry
+          ) {
             error.message = '请求超时，请稍后再试！'
             return Promise.reject(error)
           }

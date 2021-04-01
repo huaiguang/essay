@@ -4,7 +4,7 @@ window.addEventListener('load', function() {
 
     if (e) {
       var t = e.getEntriesByType('navigation')[0],
-          r = 0
+        r = 0
 
       t || (r = (t = e.timing).navigationStart)
       var n = [
@@ -57,10 +57,10 @@ window.addEventListener('load', function() {
 
       if (Math.random() > 0.75) {
         var s = window.location,
-            i = s.href,
-            c = s.pathname,
-            u = navigator.userAgent,
-            d = i.split('?')[0]
+          i = s.href,
+          c = s.pathname,
+          u = navigator.userAgent,
+          d = i.split('?')[0]
 
         o.a
           .post('https://tr.jianshu.com/fe/1/mon/atf', {

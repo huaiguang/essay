@@ -19,13 +19,13 @@ Loading.show = () => {
       </div>
     </div>
   `,
-        LoadingTip = Vue.extend({
-          'template': loadingTpl
-        }),
-        loadingTemplate = new LoadingTip().$mount().$el
+    LoadingTip = Vue.extend({
+      template: loadingTpl
+    }),
+    loadingTemplate = new LoadingTip().$mount().$el
 
   document.body.appendChild(loadingTemplate)
-    // 防止遮罩滑动
+  // 防止遮罩滑动
   document.querySelector('.wrap-loading').addEventListener('touchmove', function(e) {
     e.preventDefault()
     e.stopPropagation()
@@ -53,14 +53,14 @@ Loading.install = function(vue) {
     if (document.querySelector('.wrap-loading')) {
       return
     }
-        // 创建loading模版
+    // 创建loading模版
     const LoadingTip = vue.extend({
-            // template: `
-            //   <div class="wrap-loading">
-            //     <div class="loader"></div>
-            //   </div>
-            // `
-      'template': `
+        // template: `
+        //   <div class="wrap-loading">
+        //     <div class="loader"></div>
+        //   </div>
+        // `
+        template: `
         <div class="wrap-loading">
           <div class="van-loading van-loading--circular">
             <span class="van-loading__spinner van-loading__spinner--circular" style="width: .3rem; height: .3rem;">
@@ -72,12 +72,12 @@ Loading.install = function(vue) {
           </div>
         </div>
       `
-    }),
-            // 创建实例，挂载到文档
-          loadingTemplate = new LoadingTip().$mount().$el
+      }),
+      // 创建实例，挂载到文档
+      loadingTemplate = new LoadingTip().$mount().$el
 
     document.body.appendChild(loadingTemplate)
-        // 防止遮罩滑动
+    // 防止遮罩滑动
     document.querySelector('.wrap-loading').addEventListener('touchmove', function(e) {
       e.preventDefault()
       e.stopPropagation()

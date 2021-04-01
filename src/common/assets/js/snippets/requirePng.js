@@ -1,7 +1,11 @@
 // 引入全部的图片
 // 理解require.context()
 const allPng = {},
-      context = require.context('../../../../../assets/image/globalaccount/shop-detail/', false, /\.png/)
+  context = require.context(
+    '../../../../../assets/image/globalaccount/shop-detail/',
+    false,
+    /\.png/
+  )
 
 context.keys().forEach(key => {
   let route = key.split('-')[1]

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <img
-      class="banner"
-      :src="sunrise"
-    >
+    <img class="banner" :src="sunrise" />
     <div class="wrapper">
       {{ msg }}
     </div>

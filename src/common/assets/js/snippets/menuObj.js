@@ -4,7 +4,6 @@
  * @return {array}          树结构数组
  */
 function transformTreeMenu(menusObj) {
-
   function ergodic(obj) {
     if (obj.hasOwnProperty('submenus') && Object.keys(obj.submenus).length > 0) {
       if (obj.children === undefined) {
@@ -28,5 +27,4 @@ function transformTreeMenu(menusObj) {
     }
   }
   return list
-
 }

@@ -22,7 +22,7 @@ function downloadByElemA({ url, name } = {}) {
  */
 function savePic(url, fileName) {
   const img = new Image(),
-        canvas = document.createElement('canvas')
+    canvas = document.createElement('canvas')
 
   img.onload = function() {
     // this 指向 img 对象，如下：
@@ -35,8 +35,8 @@ function savePic(url, fileName) {
     context.drawImage(this, 0, 0)
 
     downloadByElemA({
-      'url': canvas.toDataURL('image/png'),
-      'name': fileName
+      url: canvas.toDataURL('image/png'),
+      name: fileName
     })
   }
   img.crossOrigin = 'Anonymous'
@@ -58,8 +58,8 @@ function downLocalImage(img, name) {
 
   context.drawImage(img, 0, 0, img.width, img.height)
   downloadByElemA({
-    'url': canvas.toDataURL('image/png'),
-    'name': name
+    url: canvas.toDataURL('image/png'),
+    name: name
   })
 }
 
@@ -71,11 +71,11 @@ function downLocalImage(img, name) {
  */
 function saveAs(data, name) {
   var urlObject = window.URL || window.webkitURL || window,
-      export_blob = new Blob([data])
-    // download the file
+    export_blob = new Blob([data])
+  // download the file
 
   downloadByElemA({
-    'url': urlObject.createObjectURL(export_blob),
-    'name': name
+    url: urlObject.createObjectURL(export_blob),
+    name: name
   })
 }

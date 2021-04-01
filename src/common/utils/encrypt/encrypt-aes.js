@@ -20,16 +20,12 @@ function aesDecrypt({ data, isObject = true, secretkey }) {
   }
   console.log(data, secretkey)
   const bytes = CryptoJS.AES.decrypt(data, secretkey),
-        plainText = bytes.toString(CryptoJS.enc.Utf8)
+    plainText = bytes.toString(CryptoJS.enc.Utf8)
 
   if (isObject === true) {
     return JSON.parse(plainText)
   }
   return plainText
-
 }
 
-export {
-  aesEncrypt,
-  aesDecrypt
-}
+export { aesEncrypt, aesDecrypt }

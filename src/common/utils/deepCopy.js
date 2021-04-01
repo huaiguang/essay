@@ -4,13 +4,13 @@
  * @param {*} cache 缓存数组
  */
 function deepCopy(obj, cache = []) {
-    // typeof [] => 'object'
-    // typeof {} => 'object'
+  // typeof [] => 'object'
+  // typeof {} => 'object'
   if (obj === null || typeof obj !== 'object') {
     return obj
   }
-    // 如果传入的对象与缓存的相等, 则递归结束, 这样防止循环
-    /**
+  // 如果传入的对象与缓存的相等, 则递归结束, 这样防止循环
+  /**
    * 类似下面这种
    * var a = {b:1}
    * a.c = a
@@ -22,10 +22,10 @@ function deepCopy(obj, cache = []) {
     return hit.copy
   }
   const copy = Array.isArray(obj) ? [] : {}
-    // 将copy首先放入cache, 因为我们需要在递归deepCopy的时候引用它
+  // 将copy首先放入cache, 因为我们需要在递归deepCopy的时候引用它
 
   cache.push({
-    'original': obj,
+    original: obj,
     copy
   })
   Object.keys(obj).forEach(key => {
@@ -34,6 +34,4 @@ function deepCopy(obj, cache = []) {
   return copy
 }
 
-export {
-  deepCopy
-}
+export { deepCopy }

@@ -4,16 +4,20 @@
   "description": "informal essay",
   "main": "index.js",
   "scripts": {
-    "eslint": "eslint ./src --quiet",
-    "eslint:fix": "eslint ./src --fix --quiet",
+    "eslint": "eslint src/ --ext .js,.vue --quiet",
+    "eslint:fix": "eslint src/ --ext .js,.vue --fix --quiet",
+    "prettier:check": "prettier --check \"src/**/*.{vue,js,css}\"",
+    "prettier:write": "prettier --write \"src/**/*.{vue,js,css}\"",
     "test": "cross-env NODE_ENV=development webpack --config build/webpack.config.js",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --inline --progress --config build/webpack.config.dev.js",
     "build": "cross-env NODE_ENV=production node build/build.js"
   },
-  "keywords": [
-    "front-end"
-  ],
   "author": "carlos",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/huaiguang/essay.git"
+  },
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.11.0",
@@ -31,10 +35,12 @@
     "file-loader": "^6.0.0",
     "glob": "^7.1.6",
     "html-webpack-plugin": "^4.3.0",
+    "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
     "ora": "^5.2.0",
     "postcss-loader": "^3.0.0",
+    "prettier": "^1.19.1",
     "pug": "^3.0.0",
     "sass-loader": "^9.0.2",
     "shelljs": "^0.8.4",
@@ -60,7 +66,7 @@
     "vuex": "^3.5.1"
   },
   "engines": {
-    "node": ">= 6.0.0",
+    "node": ">= 7.0.0",
     "npm": ">= 3.0.0"
   },
   "browserslist": [

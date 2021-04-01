@@ -11,8 +11,8 @@
  */
 function requireAll(options) {
   const { directory, useSubdirectories, regExp } = options,
-        context = require.context(directory, useSubdirectories, regExp),
-        map = {}
+    context = require.context(directory, useSubdirectories, regExp),
+    map = {}
 
   context.keys().forEach(key => {
     let route = key.substring(2)
