@@ -9,7 +9,9 @@ module.exports = {
   output: {
     publicPath: '/',
     path: path.join(__dirname, '../dist/'),
-    filename: isDev ? 'static/prototype/js/[name].js?v=[hash:6]' : 'static/prototype/js/[name].js?v=[chunkHash:6]'
+    filename: isDev ?
+      'static/prototype/js/[name].js?v=[hash:6]' :
+      'static/prototype/js/[name].js?v=[chunkHash:6]'
   },
   module: {
     rules: [
@@ -19,18 +21,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
+        use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.scss$/,
-        use: [
-          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader'
-        ]
+        use: [isDev ? 'style-loader' : MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
       {
         test: /\.js$/,
@@ -45,21 +40,23 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|svg|gif)$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 8196,
-            outputPath: 'static/prototype/images/',
-            name: isDev ? '[name].[ext]?v=[hash:6]' : '[name].[ext]?v=[contentHash:6]'
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8196,
+              outputPath: 'static/prototype/images/',
+              name: isDev ? '[name].[ext]?v=[hash:6]' : '[name].[ext]?v=[contentHash:6]'
+            }
           }
-        }]
+        ]
       }
     ]
   },
   plugins: [
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: "static/prototype/css/[name].css?v=[contentHash:6]"
+      filename: 'static/prototype/css/[name].css?v=[contentHash:6]'
     }),
     htmlProducer({
       title: 'prototype',
@@ -67,5 +64,8 @@ module.exports = {
       fileName: 'html/prototype/index.html'
     })
   ],
-  devtool: process.env.NODE_ENV === 'development' ? 'cheap-module-eval-source-map' : 'cheap-module-source-map'
+  devtool:
+    process.env.NODE_ENV === 'development' ?
+      'cheap-module-eval-source-map' :
+      'cheap-module-source-map'
 }

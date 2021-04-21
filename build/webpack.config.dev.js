@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const { merge } = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.config.base')
+
 process.env.NODE_ENV = 'development'
 
 module.exports = merge(webpackBaseConfig, {
@@ -10,11 +11,11 @@ module.exports = merge(webpackBaseConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       IS_DEV: JSON.stringify(true)
-    }),
+    })
   ],
   devServer: {
     contentBase: './dist',
-    port: '8084',
+    port: '8011',
     inline: true, // 文件修改后实时刷新
     historyApiFallback: true, // 不跳转
     hot: true // 热更新
@@ -23,5 +24,5 @@ module.exports = merge(webpackBaseConfig, {
     alias: {
       '@': path.resolve(__dirname, '../src/')
     }
-  },
+  }
 })
