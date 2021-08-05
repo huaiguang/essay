@@ -1,16 +1,17 @@
 const path = require('path')
+const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const htmlProducer = require('./htmlProducer')
-const webpack = require('webpack')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const { dateFormat } = require('../build/utils')
 const isDev = process.env.NODE_ENV === 'development'
-const { dateFormat } = require('./utils')
 
 Date.prototype.toJSON = function() {
   return dateFormat(this, 'yyyy-MM-dd hh:mm:ss')
 }
 
 module.exports = options => ({
+  mode: options.mode,
   entry: options.entry,
   output: Object.assign(
     {
@@ -51,7 +52,7 @@ module.exports = options => ({
             loader: 'url-loader',
             options: {
               limit: 8196,
-              outputPath: `static/${options.src}/images/`,
+              outputPath: `static/${options.name}/${options.type}/images`,
               name: isDev ? '[name].[ext]?v=[hash:6]' : '[name].[ext]?v=[contentHash:6]'
             }
           }
@@ -59,29 +60,22 @@ module.exports = options => ({
       }
     ]
   },
-  plugins: [
-    new VueLoaderPlugin(),
+  plugins: options.plugins.concat([
+    new FriendlyErrorsWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(options.mode),
       builtDate: JSON.stringify(new Date())
     }),
+    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      // filename: 'static/prototype/pc/css/[name].css?v=[contentHash:6]'
-      filename: `static/${options.src}/css/[name].css?v=[contentHash:6]`
-    }),
-    htmlProducer({
-      title: options.title,
-      filename: `html/${options.route}/index.html`
+      filename: `static/${options.name}/${options.type}/css/[name].css?v=[contentHash:6]`
     })
-  ].concat(options.plugins),
-  devtool:
-    process.env.NODE_ENV === 'development' ?
-      'cheap-module-eval-source-map' :
-      'cheap-module-source-map',
-  devServer: options.devServer,
+  ]),
+  devtool: isDev ? 'cheap-module-eval-source-map' : 'cheap-module-source-map',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '../src/')
     }
-  }
+  },
+  stats: 'errors-only'
 })

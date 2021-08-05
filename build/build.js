@@ -7,13 +7,29 @@ const rm = require('rimraf')
 const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
-const config = require('../config')
-const webpackConfig = require('./webpack.config.prod')
+const webpackBaseConfig = require('./webpack.config.base')
+
+const parse = require('minimist')
+const argv = parse(process.argv.slice(2))
+const src = argv._[0]
+const route = src.split('/')[0]
+const options = {
+  src,
+  route,
+  entry: path.join(__dirname, `../src/${src}/index.js`),
+  output: {
+    filename: `static/${src}/js/[name].js?v=[hash:6]`
+  },
+  plugins: []
+}
+const webpackConfig = webpackBaseConfig(options)
+
+webpackConfig.mode = 'production'
 
 const spinner = ora('building for production...')
 
 spinner.start()
-rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
+rm(path.join(__dirname, `../dist/static/${src}/`), err => {
   if (err) {
     throw err
   }
@@ -38,6 +54,5 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     }
 
     console.log(chalk.cyan('  Build complete.\n'))
-    console.log(chalk.yellow('  Tip: built files are meant to be served over an HTTP server.\n'))
   })
 })

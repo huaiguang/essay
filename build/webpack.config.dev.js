@@ -1,11 +1,25 @@
 const path = require('path')
 const webpack = require('webpack')
-const { merge } = require('webpack-merge')
 const webpackBaseConfig = require('./webpack.config.base')
+// const parse = require('minimist')
+
+// const argv = parse(process.argv.slice(2))
+// const src = argv._[0]
+// const route = src.split('/')[0]
+const src = 'prototype/pc'
+const route = 'prototype'
+const options = {
+  src,
+  route,
+  entry: path.join(__dirname, `../src/${src}/index.js`),
+  output: {
+    filename: `static/${src}/js/[name].js?v=[hash:6]`
+  }
+}
 
 process.env.NODE_ENV = 'development'
 
-module.exports = merge(webpackBaseConfig, {
+const config = webpackBaseConfig({
   mode: 'development',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
@@ -20,9 +34,8 @@ module.exports = merge(webpackBaseConfig, {
     historyApiFallback: true, // 不跳转
     hot: true // 热更新
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, '../src/')
-    }
-  }
+  ...options
 })
+
+console.log(config)
+module.exports = config

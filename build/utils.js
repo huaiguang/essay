@@ -97,3 +97,55 @@ exports.createNotifierCallback = () => {
     })
   }
 }
+
+/**
+ * 正则分组捕获
+ * 正则匹配时，默认是贪婪模式
+ */
+const SIGN_REGEXP = /([yMdhms])(\1*)/g,
+  // 默认的时间格式
+  DEFAULT_PATTERN = 'yyyy-MM-dd'
+
+/**
+ * 补全日期中单个时间前面的0，例如一月 '01'
+ * @param  {[string]} s   [the string to deal]
+ * @param  {[number]} len [the reserved length]
+ * @return {[string]}     [add extra 0 to the left of the s]
+ */
+function padding(s, len) {
+  var newStr = String(s),
+    newLen = len - newStr.length
+
+  for (var i = 0; i < newLen; i++) {
+    newStr = '0' + s
+  }
+  return newStr
+}
+
+/**
+ * format the date string by the pattern
+ * @param {date} date
+ * @param {string} pattern the required format date string, as 'yyyy-MM-dd hh:mm:ss'
+ * @return {string}
+ */
+function dateFormat(date = new Date(), pattern = DEFAULT_PATTERN) {
+  return pattern.replace(SIGN_REGEXP, function($0) {
+    switch ($0.charAt(0)) {
+      case 'y':
+        return padding(date.getFullYear(), $0.length)
+      case 'M':
+        return padding(date.getMonth() + 1, $0.length)
+      case 'd':
+        return padding(date.getDate(), $0.length)
+      case 'h':
+        return padding(date.getHours(), $0.length)
+      case 'm':
+        return padding(date.getMinutes(), $0.length)
+      case 's':
+        return padding(date.getSeconds(), $0.length)
+      // no default
+    }
+  })
+}
+
+exports.dateFormat = dateFormat

@@ -118,7 +118,7 @@ module.exports = {
     'no-eq-null': 2, //禁止对null使用==或!=运算符
     'no-eval': 1, //禁止使用eval
     'no-ex-assign': 2, //禁止给catch语句中的异常参数赋值
-    'no-extend-native': 2, //禁止扩展native对象
+    'no-extend-native': 0, //禁止扩展native对象
     'no-extra-bind': 2, //禁止不必要的函数绑定
     'no-extra-boolean-cast': 2, //禁止不必要的bool转换
     // 'no-extra-parens': 2, //禁止非必要的括号
@@ -153,7 +153,8 @@ module.exports = {
     'no-native-reassign': 2, //不能重写native对象
     'no-negated-in-lhs': 2, //in 操作符的左边不能有!
     'no-nested-ternary': 0, //禁止使用嵌套的三目运算
-    'no-new': 1, //禁止在使用new构造一个实例后不赋值
+    // 在例如 new Vue() 上会报错
+    // 'no-new': 1, //禁止在使用new构造一个实例后不赋值
     'no-new-func': 1, //禁止使用new Function
     'no-new-object': 2, //禁止使用new Object()
     'no-new-require': 2, //禁止使用new require
@@ -245,8 +246,8 @@ module.exports = {
     // 'newline-after-var': 2, //变量声明后是否需要空一行
     'padding-line-between-statements': [
       'error',
-      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*'},
-      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var']}
+      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] }
     ],
     'object-curly-spacing': [0, 'never'], //大括号内是否允许不必要的空格
     'object-shorthand': 0, //强制对象字面量缩写语法

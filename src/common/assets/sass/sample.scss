@@ -17,7 +17,3 @@
   overflow: hidden;
   border-width: $size;
 }
-
-.demo {
-  @include triangle(left);
-}
