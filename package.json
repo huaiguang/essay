@@ -4,15 +4,16 @@
   "description": "informal essay",
   "main": "index.js",
   "scripts": {
-    "eslint": "eslint src/ --ext .js,.vue --quiet",
-    "eslint:fix": "eslint src/ --ext .js,.vue --fix --quiet",
+    "lint": "eslint src/ --ext .js,.vue --quiet",
+    "lint:fix": "eslint src/ --ext .js,.vue --quiet --fix",
     "prettier:check": "prettier --check \"src/**/*.{vue,js,css}\"",
     "prettier:write": "prettier --write \"src/**/*.{vue,js,css}\"",
     "prepare": "husky install",
     "precommit": "lint-staged",
     "webpack:test": "webpack --config build/webpack.config.js",
     "dev": "webpack-dev-server --config build/webpack.config.dev.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "build:stats": "node build/build.js --json > stats.json"
   },
   "lint-staged": {
     "*.{js,vue,css,md,json}": [
@@ -52,6 +53,8 @@
     "lodash": "^4.17.21",
     "mini-css-extract-plugin": "^0.9.0",
     "minimist": "^1.2.5",
+    "mock": "^0.1.1",
+    "mockjs": "^1.1.0",
     "node-sass": "^4.14.1",
     "ora": "^5.2.0",
     "postcss-loader": "^3.0.0",
@@ -71,6 +74,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^1.7.6",
+    "axios": "^0.21.4",
     "crypt-js": "^1.0.4",
     "encrypt": "0.0.1",
     "jquery": "^3.5.1",

@@ -62,7 +62,6 @@ module.exports = options => ({
   plugins: [
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(options.mode),
       builtDate: JSON.stringify(new Date())
     }),
     new MiniCssExtractPlugin({

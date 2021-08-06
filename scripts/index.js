@@ -64,7 +64,8 @@ if (mode === 'build') {
   // 构建流程
   rm(path.join(__dirname, `../dist/static/${src}`), err => {
     if (err) {
-      console.log(chalk.red('删除错误'))
+      console.log(chalk.red('删除失败'))
+      process.exit(1)
     }
 
     webpack(webpackConfig, (error, stats) => {

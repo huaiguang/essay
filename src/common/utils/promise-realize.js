@@ -1,3 +1,5 @@
+/* eslint-disable */
+// 功能性函数，不使用es6 module写法，就会有 no-unused-vars 问题
 // 判断变量否为function
 const isFunction = variable => typeof variable === 'function',
   // 定义Promise的三种状态常量
@@ -49,8 +51,8 @@ class MyPromise {
           }
         }
       /* 如果resolve的参数为Promise对象，则必须等待该Promise对象状态改变后,
-          当前Promsie的状态才会改变，且状态取决于参数Promsie对象的状态
-        */
+       * 当前Promsie的状态才会改变，且状态取决于参数Promsie对象的状态
+       */
 
       if (val instanceof MyPromise) {
         val.then(
@@ -153,6 +155,7 @@ class MyPromise {
         case REJECTED:
           rejected(_value)
           break
+        // no default
       }
     })
   }

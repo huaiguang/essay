@@ -89,9 +89,7 @@ function _isValidDate(date) {
  * @param {date} now 传入的日期，为空时为当前日期
  * @returns 到期日期
  */
-function _getExpiresDate(expires, now) {
-  now = now || new Date()
-
+function _getExpiresDate(expires, now = new Date()) {
   if (typeof expires === 'number') {
     expires = expires === Infinity ? _maxExpireDate : new Date(now.getTime() + expires * 1000)
   } else if (typeof expires === 'string') {
@@ -132,10 +130,9 @@ function _isQuotaExceeded(e) {
 }
 
 // cache item constructor
-function CacheItemConstructor(value, exp) {
+function CacheItemConstructor(value, exp = _defaultExpire) {
   // createTime
   this.c = new Date().getTime()
-  exp = exp || _defaultExpire
   var expires = _getExpiresDate(exp)
   // expiresTime
 

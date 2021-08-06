@@ -28,9 +28,7 @@ function padding(s, len) {
  * @param {string} pattern the required format date string, as 'yyyy-MM-dd hh:mm:ss'
  * @return {string}
  */
-function dateFormat(date, pattern) {
-  date = date || new Date()
-  pattern = pattern || DEFAULT_PATTERN
+function dateFormat(date = new Date(), pattern = DEFAULT_PATTERN) {
   return pattern.replace(SIGN_REGEXP, function($0) {
     switch ($0.charAt(0)) {
       case 'y':

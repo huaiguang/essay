@@ -1,7 +1,7 @@
 import CryptoJS from 'crypto-js'
 
-function aesEncrypt(data, secretkey) {
-  if (!data || !secretkey) {
+function aesEncrypt(data, secretKey) {
+  if (!data || !secretKey) {
     return ''
   }
   let encryptedStr = ''
@@ -11,15 +11,15 @@ function aesEncrypt(data, secretkey) {
   } else {
     encryptedStr = data
   }
-  return CryptoJS.AES.encrypt(encryptedStr, secretkey).toString()
+  return CryptoJS.AES.encrypt(encryptedStr, secretKey).toString()
 }
 
-function aesDecrypt({ data, isObject = true, secretkey }) {
-  if (!data || !secretkey) {
+function aesDecrypt({ data, isObject = true, secretKey }) {
+  if (!data || !secretKey) {
     return ''
   }
-  console.log(data, secretkey)
-  const bytes = CryptoJS.AES.decrypt(data, secretkey),
+  console.log(data, secretKey)
+  const bytes = CryptoJS.AES.decrypt(data, secretKey),
     plainText = bytes.toString(CryptoJS.enc.Utf8)
 
   if (isObject === true) {

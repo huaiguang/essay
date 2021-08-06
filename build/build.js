@@ -20,7 +20,11 @@ const options = {
   output: {
     filename: `static/${src}/js/[name].js?v=[hash:6]`
   },
-  plugins: []
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': require('../config/prod.env')
+    })
+  ]
 }
 const webpackConfig = webpackBaseConfig(options)
 

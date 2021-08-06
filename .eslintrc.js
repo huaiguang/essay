@@ -7,6 +7,9 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint'
   },
+  globals: {
+    builtDate: 'readonly'
+  },
   rules: {
     indent: [
       'error',
@@ -112,7 +115,8 @@ module.exports = {
     'no-dupe-keys': 2, //在创建对象字面量时不允许键重复 {a:1,a:1}
     'no-dupe-args': 2, //函数参数不能重复
     'no-duplicate-case': 2, //switch中的case标签不能重复
-    'no-else-return': 2, //如果if语句里面有return,后面不能跟else语句
+    // 如果if语句里面有return,后面不能跟else语句; 事实上只有每个分支都有return才应该有效
+    'no-else-return': 0,
     'no-empty': [2, { allowEmptyCatch: true }], //块语句中的内容不能为空
     'no-empty-character-class': 2, //正则表达式中的[]内容不能为空
     'no-eq-null': 2, //禁止对null使用==或!=运算符
@@ -240,15 +244,16 @@ module.exports = {
     'max-nested-callbacks': [0, 2], //回调嵌套深度
     'max-params': [0, 3], //函数最多只能有3个参数
     'max-statements': [0, 10], //函数内最多有几个声明
-    'new-cap': 2, //函数名首行大写必须使用new方式调用，首行小写必须用不带new方式调用
+    // 函数名首行大写必须使用new方式调用，首行小写必须用不带new方式调用
+    'new-cap': 1,
     'new-parens': 2, //new时必须加小括号
     // [deprecated]
     // 'newline-after-var': 2, //变量声明后是否需要空一行
-    'padding-line-between-statements': [
-      'error',
-      { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
-      { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] }
-    ],
+    // 'padding-line-between-statements': [
+    //   'error',
+    //   { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+    //   { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] }
+    // ],
     'object-curly-spacing': [0, 'never'], //大括号内是否允许不必要的空格
     'object-shorthand': 0, //强制对象字面量缩写语法
     'one-var': 0, //连续声明

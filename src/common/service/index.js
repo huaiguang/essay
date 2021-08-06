@@ -4,7 +4,7 @@ import Interceptors from './Interceptors'
 
 // 创建axios实例
 const httpService = axios.create({
-  baseURL: 'http://localhost:8081', // url前缀
+  baseURL: '//artemis.com', // url前缀
   timeout: 3000 // 请求超时时间
 })
 const interceptors = new Interceptors({})
@@ -27,10 +27,14 @@ export function get(url, params, options = {}) {
     httpService({
       url: url,
       method: 'get',
-      params: params
+      params
     })
       .then(response => {
-        resolve(response)
+        if (response.data.code === '000000') {
+          resolve(response.data)
+        } else {
+          reject(response)
+        }
       })
       .catch(error => {
         reject(error)
@@ -51,7 +55,12 @@ export function post(url, params, options = {}) {
       data: params
     })
       .then(response => {
-        resolve(response)
+        console.log('response', response)
+        if (response.data.code === '000000') {
+          resolve(response.data)
+        } else {
+          reject(response)
+        }
       })
       .catch(error => {
         reject(error)
