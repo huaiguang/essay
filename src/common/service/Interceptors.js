@@ -31,6 +31,9 @@ class Interceptors {
         }
       },
       error => {
+        // console.log('timeout', error, error.code, error.message)
+        // error.code    ECONNABORTED
+        // error.message timeout of 3000ms exceeded
         if (afterResponse[1]) {
           afterResponse[1](error)
         } else {

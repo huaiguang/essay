@@ -80,7 +80,8 @@ module.exports = options => ({
   devServer: options.devServer,
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '../src/')
+      '@': path.resolve(__dirname, '../src/'),
+      vue$: 'vue/dist/vue.esm.js'
     }
   }
 })

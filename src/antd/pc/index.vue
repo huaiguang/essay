@@ -100,5 +100,6 @@ export default {
   margin: 10px;
   padding: 16px;
   background-color: #fff;
+  overflow-y: auto;
 }
 </style>

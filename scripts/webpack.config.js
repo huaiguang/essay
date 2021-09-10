@@ -74,7 +74,8 @@ module.exports = options => ({
   devtool: isDev ? 'cheap-module-eval-source-map' : 'cheap-module-source-map',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '../src/')
+      '@': path.resolve(__dirname, '../src/'),
+      vue$: 'vue/dist/vue.esm.js'
     }
   },
   stats: 'errors-only'

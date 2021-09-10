@@ -1,6 +1,7 @@
 // 引入axios
 import axios from 'axios'
 import Interceptors from './Interceptors'
+import Loading from '@/common/components/Loading'
 
 // 创建axios实例
 const httpService = axios.create({
@@ -16,13 +17,23 @@ httpService.interceptors.request.use(...interceptors.beforeRequest)
 httpService.interceptors.response.use(...interceptors.afterResponse)
 
 /*网络请求部分*/
-
-/*
- *  get请求
- *  url:请求地址
- *  params:参数
- * */
-export function get(url, params, options = {}) {
+/**
+ * 封装的get请求
+ * @param {string} url api地址
+ * @param {object} params 请求的参数
+ * @param {object} options 其他配置
+ * @returns {object|promise}
+ */
+export function get(
+  url,
+  params,
+  options = {
+    loading: true
+  }
+) {
+  if (options.loading) {
+    Loading.show()
+  }
   return new Promise((resolve, reject) => {
     httpService({
       url: url,
@@ -30,24 +41,32 @@ export function get(url, params, options = {}) {
       params
     })
       .then(response => {
-        if (response.data.code === '000000') {
+        if (response.data && response.data.code === '000000') {
           resolve(response.data)
+          Loading.hide()
         } else {
           reject(response)
+          Loading.hide()
         }
       })
       .catch(error => {
         reject(error)
+        Loading.hide()
       })
   })
 }
 
-/*
- *  post请求
- *  url:请求地址
- *  params:参数
- * */
-export function post(url, params, options = {}) {
+/**
+ * 封装的post方法
+ * @param {string} url api地址
+ * @param {object} params 请求的参数
+ * @param {object} options 其他配置
+ * @returns {object|promise}
+ */
+export function post(url, params, options = { loading: true }) {
+  if (options.loading) {
+    Loading.show()
+  }
   return new Promise((resolve, reject) => {
     httpService({
       url: url,
@@ -56,23 +75,27 @@ export function post(url, params, options = {}) {
     })
       .then(response => {
         console.log('response', response)
-        if (response.data.code === '000000') {
+        if (response.data && response.data.code === '000000') {
           resolve(response.data)
+          Loading.hide()
         } else {
           reject(response)
+          Loading.hide()
         }
       })
       .catch(error => {
         reject(error)
+        Loading.hide()
       })
   })
 }
 
-/*
- *  文件上传
- *  url: 请求地址
- *  params: 参数
- * */
+/**
+ * 文件上传
+ * @param {string} url
+ * @param {object} params
+ * @returns {object|promise}
+ */
 export function fileUpload(url, params = {}) {
   return new Promise((resolve, reject) => {
     httpService({

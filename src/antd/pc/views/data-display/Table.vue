@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     getDemoData() {
-      this.$post('//artemis.com/queryDemoData', {})
+      this.$post('//artemis.com/queryDemoData', {}, { loading: true })
         .then(res => {
           console.log('res', res.data)
           const data = res.data.list
