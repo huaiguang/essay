@@ -61,6 +61,11 @@ const routes = [
         path: 'checkbox',
         name: 'checkbox',
         component: () => import('../views/data-entry/Checkbox.vue')
+      },
+      {
+        path: 'input',
+        name: 'input',
+        component: () => import('../views/data-entry/Input.vue')
       }
     ]
   },

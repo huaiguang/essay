@@ -8,7 +8,8 @@ module.exports = {
     parser: 'babel-eslint'
   },
   globals: {
-    builtDate: 'readonly'
+    builtDate: 'readonly',
+    window: 'readonly'
   },
   rules: {
     indent: [

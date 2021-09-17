@@ -179,6 +179,7 @@
         const clientWidth = htmlElement.clientWidth
         if (clientWidth === undefined) return
         htmlElement.style.fontSize = (clientWidth * 100) / 375 + 'px' // 以当前设计稿尺寸为准
+        document.body.style.visibility = 'visible'
       }
       if (!document.addEventListener) return
       window.addEventListener(resizeEvent, reCalculate, false)
@@ -187,7 +188,7 @@
   </script>
 </head>
 
-<body>
+<body style="visibility: hidden;">
   <div id="app"></div>
 </body>
 

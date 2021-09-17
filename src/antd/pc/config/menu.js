@@ -49,6 +49,10 @@ const menuTree = [
       {
         name: '多选框',
         key: 'checkbox'
+      },
+      {
+        name: '输入框',
+        key: 'input'
       }
     ]
   },
