@@ -1,195 +1,195 @@
 <!DOCTYPE html>
 <html pc-url="../">
 
-<head>
-  <script>
-    (function() {
-      if (location.search && location.search.indexOf("debug") >= 0) {
-        return;
-      }
-      // 参考 https://github.com/matthewhudson/device.js/blob/master/lib/device.js
-      var userAgent = window.navigator.userAgent.toLowerCase();
-      function find(needle) {
-        return userAgent.indexOf(needle) !== -1;
-      }
-      var iphone = function () {
-        return !windows() && find('iphone');
-      };
-      var ipod = function () {
-        return find('ipod');
-      };
-      var ipad = function () {
-        return find('ipad');
-      };
-      var android = function () {
-        return !windows() && find('android');
-      };
-      var androidPhone = function () {
-        return android() && find('mobile');
-      };
-      var androidTablet = function () {
-        return android() && !find('mobile');
-      };
-      var blackberry = function () {
-        return find('blackberry') || find('bb10') || find('rim');
-      };
-      var blackberryPhone = function () {
-        return blackberry() && !find('tablet');
-      };
-      var blackberryTablet = function () {
-        return blackberry() && find('tablet');
-      };
-      var windows = function () {
-        return find('windows');
-      };
-      var windowsPhone = function () {
-        return windows() && find('phone');
-      };
-      var windowsTablet = function () {
-        return windows() && (find('touch') && !windowsPhone());
-      };
-      var fxos = function () {
-        return (find('(mobile;') || find('(tablet;')) && find('; rv:');
-      };
-      var fxosPhone = function () {
-        return fxos() && find('mobile');
-      };
-      var fxosTablet = function () {
-        return fxos() && find('tablet');
-      };
-      var meego = function () {
-        return find('meego');
-      };
-      var mobile = function () {
-        return androidPhone() || iphone() || ipod() || windowsPhone() || blackberryPhone() || fxosPhone() || meego();
-      };
-      var tablet = function () {
-        return ipad() || androidTablet() || blackberryTablet() || windowsTablet() || fxosTablet();
-      };
-      var landscape = function () {
-        return (window.innerHeight / window.innerWidth) < 1;
-      };
-
-      var conf = document.getElementsByTagName("html")[0];
-      var pcurl = conf.getAttribute("pc-url");
-      var h5url = conf.getAttribute("h5-url");
-      // var isLandscape = landscape();
-
-      // 跳转时保持 query string 和 hash
-      function redirect(url) {
-        if (url.indexOf("#") == -1) {
-          url += location.hash
+  <head>
+    <script>
+      (function () {
+        if (location.search && location.search.indexOf("debug") >= 0) {
+          return;
         }
-        if (url.indexOf("?") == -1) {
-          url += location.search
+        // 参考 https://github.com/matthewhudson/device.js/blob/master/lib/device.js
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        function find(needle) {
+          return userAgent.indexOf(needle) !== -1;
         }
-        location.href = url
-      }
+        var iphone = function () {
+          return !windows() && find('iphone');
+        };
+        var ipod = function () {
+          return find('ipod');
+        };
+        var ipad = function () {
+          return find('ipad');
+        };
+        var android = function () {
+          return !windows() && find('android');
+        };
+        var androidPhone = function () {
+          return android() && find('mobile');
+        };
+        var androidTablet = function () {
+          return android() && !find('mobile');
+        };
+        var blackberry = function () {
+          return find('blackberry') || find('bb10') || find('rim');
+        };
+        var blackberryPhone = function () {
+          return blackberry() && !find('tablet');
+        };
+        var blackberryTablet = function () {
+          return blackberry() && find('tablet');
+        };
+        var windows = function () {
+          return find('windows');
+        };
+        var windowsPhone = function () {
+          return windows() && find('phone');
+        };
+        var windowsTablet = function () {
+          return windows() && (find('touch') && !windowsPhone());
+        };
+        var fxos = function () {
+          return (find('(mobile;') || find('(tablet;')) && find('; rv:');
+        };
+        var fxosPhone = function () {
+          return fxos() && find('mobile');
+        };
+        var fxosTablet = function () {
+          return fxos() && find('tablet');
+        };
+        var meego = function () {
+          return find('meego');
+        };
+        var mobile = function () {
+          return androidPhone() || iphone() || ipod() || windowsPhone() || blackberryPhone() || fxosPhone() || meego();
+        };
+        var tablet = function () {
+          return ipad() || androidTablet() || blackberryTablet() || windowsTablet() || fxosTablet();
+        };
+        var landscape = function () {
+          return (window.innerHeight / window.innerWidth) < 1;
+        };
 
-      // 旧版归类：平板竖屏为h5，平板横屏为pc
-      // if (mobile() || (tablet() && !landscape())) {
-      // 	if (h5url) {
-      // 		redirect(h5url);
-      // 	}
-      // } else {
-      // 	if (pcurl) {
-      // 		redirect(pcurl);
-      // 	}
-      // }
+        var conf = document.getElementsByTagName("html")[0];
+        var pcurl = conf.getAttribute("pc-url");
+        var h5url = conf.getAttribute("h5-url");
+        // var isLandscape = landscape();
 
-      // 2018-05-08
-      // 当前归类：平板竖屏，横屏均为 h5
-      if (mobile() || tablet()) {
-        if (h5url) {
-          redirect(h5url);
+        // 跳转时保持 query string 和 hash
+        function redirect(url) {
+          if (url.indexOf("#") == -1) {
+            url += location.hash
+          }
+          if (url.indexOf("?") == -1) {
+            url += location.search
+          }
+          location.href = url
         }
-      } else {
-        if (pcurl) {
-          redirect(pcurl);
-        }
-      }
 
-      // 判断 平板 的横竖屏切换来来切换 pc 和 h5 的页面
-
-      // 平板竖屏，横屏均为 h5 ,resize 后不跳转
-      function onresize() {
-        // if (tablet() && !(isLandscape === landscape())) {
-        // 	if (landscape() && pcurl) {
-        // 		redirect(pcurl);
-        // 	} else if (!landscape() && h5url) {
+        // 旧版归类：平板竖屏为h5，平板横屏为pc
+        // if (mobile() || (tablet() && !landscape())) {
+        // 	if (h5url) {
         // 		redirect(h5url);
         // 	}
+        // } else {
+        // 	if (pcurl) {
+        // 		redirect(pcurl);
+        // 	}
         // }
-      }
 
-      var orientationEvent;
-      if (Object.prototype.hasOwnProperty.call(window, "onorientationchange")) {
-        orientationEvent = "orientationchange";
-      } else {
-        orientationEvent = "resize";
-      }
+        // 2018-05-08
+        // 当前归类：平板竖屏，横屏均为 h5
+        if (mobile() || tablet()) {
+          if (h5url) {
+            redirect(h5url);
+          }
+        } else {
+          if (pcurl) {
+            redirect(pcurl);
+          }
+        }
 
-      if (window.addEventListener) {
-        window.addEventListener(orientationEvent, onresize, false);
-      } else if (window.attachEvent) {
-        window.attachEvent(orientationEvent, onresize);
-      } else {
-        window[orientationEvent] = onresize;
-      }
-    })()
-  </script>
-  <meta charset="utf-8">
-  <title>拉卡拉跨境支付</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <!-- 删除苹果默认的工具栏和菜单栏 -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <!-- 设置苹果工具栏颜色 -->
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <!--忽略页面中的数字识别为电话，忽略email识别 -->
-  <meta name="format-detection" content="telephone=no, email=no" />
-  <!-- 启用360浏览器的极速模式(webkit) -->
-  <meta name="renderer" content="webkit">
-  <!-- 避免IE使用兼容模式 -->
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
-  <meta name="HandheldFriendly" content="true">
-  <!-- 微软的老式浏览器 -->
-  <meta name="MobileOptimized" content="320">
-  <!-- uc强制竖屏 -->
-  <meta name="screen-orientation" content="portrait">
-  <!-- QQ强制竖屏 -->
-  <meta name="x5-orientation" content="portrait">
-  <!-- UC强制全屏 -->
-  <meta name="full-screen" content="yes">
-  <!-- QQ强制全屏 -->
-  <meta name="x5-fullscreen" content="true">
-  <!-- UC应用模式 -->
-  <meta name="browsermode" content="application">
-  <!-- QQ应用模式 -->
-  <meta name="x5-page-mode" content="app">
-  <!-- windows phone 点击无高光 -->
-  <meta name="msapplication-tap-highlight" content="no">
-  <!-- favicon.ico -->
-  <link type="favicon" rel="shortcut icon" href="/favicon.ico" rel="external nofollow" />
-  <script>
-    ;(function (document, window, undefined) {
-      const htmlElement = document.documentElement
-      const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize'
-      const reCalculate = () => {
-        const clientWidth = htmlElement.clientWidth
-        if (clientWidth === undefined) return
-        htmlElement.style.fontSize = (clientWidth * 100) / 375 + 'px' // 以当前设计稿尺寸为准
-        document.body.style.visibility = 'visible'
-      }
-      if (!document.addEventListener) return
-      window.addEventListener(resizeEvent, reCalculate, false)
-      document.addEventListener('DOMContentLoaded', reCalculate, false)
-    })(document, window)
-  </script>
-</head>
+        // 判断 平板 的横竖屏切换来来切换 pc 和 h5 的页面
 
-<body style="visibility: hidden;">
-  <div id="app"></div>
-</body>
+        // 平板竖屏，横屏均为 h5 ,resize 后不跳转
+        function onresize() {
+          if (tablet() && !(isLandscape === landscape())) {
+            if (landscape() && pcurl) {
+              redirect(pcurl);
+            } else if (!landscape() && h5url) {
+              redirect(h5url);
+            }
+          }
+        }
+
+        var orientationEvent;
+        if (Object.prototype.hasOwnProperty.call(window, "onorientationchange")) {
+          orientationEvent = "orientationchange";
+        } else {
+          orientationEvent = "resize";
+        }
+
+        if (window.addEventListener) {
+          window.addEventListener(orientationEvent, onresize, false);
+        } else if (window.attachEvent) {
+          window.attachEvent(orientationEvent, onresize);
+        } else {
+          window[orientationEvent] = onresize;
+        }
+      })()
+    </script>
+    <meta charset="utf-8">
+    <title>拉卡拉跨境支付</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <!-- 删除苹果默认的工具栏和菜单栏 -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <!-- 设置苹果工具栏颜色 -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!--忽略页面中的数字识别为电话，忽略email识别 -->
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <!-- 启用360浏览器的极速模式(webkit) -->
+    <meta name="renderer" content="webkit">
+    <!-- 避免IE使用兼容模式 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true">
+    <!-- 微软的老式浏览器 -->
+    <meta name="MobileOptimized" content="320">
+    <!-- uc强制竖屏 -->
+    <meta name="screen-orientation" content="portrait">
+    <!-- QQ强制竖屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <!-- QQ强制全屏 -->
+    <meta name="x5-fullscreen" content="true">
+    <!-- UC应用模式 -->
+    <meta name="browsermode" content="application">
+    <!-- QQ应用模式 -->
+    <meta name="x5-page-mode" content="app">
+    <!-- windows phone 点击无高光 -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <!-- favicon.ico -->
+    <link type="favicon" rel="shortcut icon" href="/favicon.ico" rel="external nofollow" />
+    <script>
+        ; (function (document, window, undefined) {
+          const htmlElement = document.documentElement
+          const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize'
+          const reCalculate = () => {
+            const clientWidth = htmlElement.clientWidth
+            if (clientWidth === undefined) return
+            htmlElement.style.fontSize = (clientWidth * 100) / 375 + 'px' // 以当前设计稿尺寸为准
+            document.body.style.visibility = 'visible'
+          }
+          if (!document.addEventListener) return
+          window.addEventListener(resizeEvent, reCalculate, false)
+          document.addEventListener('DOMContentLoaded', reCalculate, false)
+        })(document, window)
+    </script>
+  </head>
+
+  <body style="visibility: hidden;">
+    <div id="app"></div>
+  </body>
 
 </html>

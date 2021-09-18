@@ -82,7 +82,7 @@
   var pcurl = conf.getAttribute('pc-url')
   var h5url = conf.getAttribute('h5-url')
 
-  // 跳转时保持 query string 和 hash
+  // 跳转时保持 queryString 和 hash
   function redirect(url) {
     if (!url) {
       return
@@ -114,15 +114,15 @@
 
   // 判断 平板 的横竖屏切换来来切换 pc 和 h5 的页面
   // 平板竖屏，横屏均为 h5 ,resize 后不跳转
-  // function onresize() {
-  //   if (tablet() && !(isLandscape === landscape())) {
-  //     if (landscape() && pcurl) {
-  //       redirect(pcurl)
-  //     } else if (!landscape() && h5url) {
-  //       redirect(h5url)
-  //     }
-  //   }
-  // }
+  function onresize() {
+    if (tablet() && isLandscape !== landscape()) {
+      if (landscape() && pcurl) {
+        redirect(pcurl)
+      } else if (!landscape() && h5url) {
+        redirect(h5url)
+      }
+    }
+  }
 
   var orientationEvent
   if (Object.prototype.hasOwnProperty.call(window, 'onorientationchange')) {
