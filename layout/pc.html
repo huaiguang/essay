@@ -4,7 +4,7 @@
   <head>
     <script>
       (function () {
-        if (location.search && location.search.indexOf("debug") >= 0) {
+        if (location.search && location.search.indexOf('debug') >= 0) {
           return;
         }
         // 参考 https://github.com/matthewhudson/device.js/blob/master/lib/device.js
@@ -70,17 +70,17 @@
           return (window.innerHeight / window.innerWidth) < 1;
         };
 
-        var conf = document.getElementsByTagName("html")[0];
-        var pcurl = conf.getAttribute("pc-url");
-        var h5url = conf.getAttribute("h5-url");
+        var conf = document.getElementsByTagName('html')[0];
+        var pcurl = conf.getAttribute('pc-url');
+        var h5url = conf.getAttribute('h5-url');
         // var isLandscape = landscape();
 
         // 跳转时保持 query string 和 hash
         function redirect(url) {
-          if (url.indexOf("#") == -1) {
+          if (url.indexOf('#') == -1) {
             url += location.hash
           }
-          if (url.indexOf("?") == -1) {
+          if (url.indexOf('?') == -1) {
             url += location.search
           }
           location.href = url
@@ -123,10 +123,10 @@
         }
 
         var orientationEvent;
-        if (Object.prototype.hasOwnProperty.call(window, "onorientationchange")) {
-          orientationEvent = "orientationchange";
+        if (Object.prototype.hasOwnProperty.call(window, 'onorientationchange')) {
+          orientationEvent = 'orientationchange';
         } else {
-          orientationEvent = "resize";
+          orientationEvent = 'resize';
         }
 
         if (window.addEventListener) {

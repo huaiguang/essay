@@ -4,7 +4,7 @@
   <head>
     <script>
       (function () {
-        if (location.search && location.search.indexOf("debug") >= 0) {
+        if (location.search && location.search.indexOf('debug') >= 0) {
           return;
         }
         // 参考 https://github.com/matthewhudson/device.js/blob/master/lib/device.js
@@ -70,17 +70,17 @@
           return (window.innerHeight / window.innerWidth) < 1;
         };
 
-        var conf = document.getElementsByTagName("html")[0];
-        var pcurl = conf.getAttribute("pc-url");
-        var h5url = conf.getAttribute("h5-url");
-        // var isLandscape = landscape();
+        var conf = document.getElementsByTagName('html')[0];
+        var pcurl = conf.getAttribute('pc-url');
+        var h5url = conf.getAttribute('h5-url');
+        var isLandscape = landscape();
 
         // 跳转时保持 query string 和 hash
         function redirect(url) {
-          if (url.indexOf("#") == -1) {
+          if (url.indexOf('#') == -1) {
             url += location.hash
           }
-          if (url.indexOf("?") == -1) {
+          if (url.indexOf('?') == -1) {
             url += location.search
           }
           location.href = url
@@ -88,13 +88,13 @@
 
         // 旧版归类：平板竖屏为h5，平板横屏为pc
         // if (mobile() || (tablet() && !landscape())) {
-        // 	if (h5url) {
-        // 		redirect(h5url);
-        // 	}
+        //   if (h5url) {
+        //     redirect(h5url);
+        //   }
         // } else {
-        // 	if (pcurl) {
-        // 		redirect(pcurl);
-        // 	}
+        //   if (pcurl) {
+        //     redirect(pcurl);
+        //   }
         // }
 
         // 2018-05-08
@@ -110,7 +110,6 @@
         }
 
         // 判断 平板 的横竖屏切换来来切换 pc 和 h5 的页面
-
         // 平板竖屏，横屏均为 h5 ,resize 后不跳转
         function onresize() {
           if (tablet() && !(isLandscape === landscape())) {
@@ -123,10 +122,10 @@
         }
 
         var orientationEvent;
-        if (Object.prototype.hasOwnProperty.call(window, "onorientationchange")) {
-          orientationEvent = "orientationchange";
+        if (Object.prototype.hasOwnProperty.call(window, 'onorientationchange')) {
+          orientationEvent = 'orientationchange';
         } else {
-          orientationEvent = "resize";
+          orientationEvent = 'resize';
         }
 
         if (window.addEventListener) {
