@@ -6,7 +6,7 @@ const REG = {
   // 香港永久性居民身份证
   hkIDCardNo: /^[a-zA-Z]{1,2}\d{6}[0−9A]?$/,
   // 大陆手机号
-  mobileNo: /^[1][3,4,5,6,7,8,9][0-9]{9}$/
+  mobile: /^1[3-9]\d{9}$/
 }
 
 export default REG

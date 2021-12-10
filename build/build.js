@@ -53,10 +53,10 @@ rm(path.join(__dirname, `../dist/static/${src}/`), err => {
     )
 
     if (stats.hasErrors()) {
-      console.log(chalk.red('  Build failed with errors.\n'))
+      console.log(chalk.red('Build failed with errors.\n'))
       process.exit(1)
     }
 
-    console.log(chalk.cyan('  Build complete.\n'))
+    console.log(chalk.cyan('Build complete.\n'))
   })
 })

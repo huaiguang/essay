@@ -1,55 +1,4 @@
-/**
- * Created by vernon on 2019/11/30.
- */
-
 import storage from './CacheStorage'
-import { dateFormat } from '@/utils/date'
-
-/**
- *
- * @param time 倒计时长
- * @param valueChange 每次计算结束返回的计算结果
- * @param callback 倒计时结束的回调函数
- * @param originMsg 倒计时结束后，显示的内容，通过valueChange回调
- */
-function countSeconds(time, valueChange, callback, originMsg) {
-  let res
-  res = setInterval(function() {
-    time = --time
-    if (time > 0) {
-      valueChange(`${originMsg}(${time}s)`)
-      // console.log('time couting..' + time);
-    } else {
-      valueChange(originMsg)
-      clearInterval(res)
-      callback()
-    }
-  }, 1000)
-}
-
-/**
- *下载导出文件
- * @param blob  ：返回数据的blob对象或链接
- * @param tagFileName  ：下载后文件名标记
- * @param fileType  ：文件类 word(docx) excel(xlsx) ppt等
- */
-function downloadExportFile(blob, tagFileName, fileType) {
-  let downloadElement = document.createElement('a')
-  let href = blob
-  if (typeof blob === 'string') {
-    downloadElement.target = '_blank'
-  } else {
-    href = window.URL.createObjectURL(blob) //创建下载的链接
-  }
-  downloadElement.href = href
-  downloadElement.download = tagFileName + '.' + fileType //下载后文件名
-  document.body.appendChild(downloadElement)
-  downloadElement.click() //点击下载
-  document.body.removeChild(downloadElement) //下载完成移除元素
-  if (typeof blob !== 'string') {
-    window.URL.revokeObjectURL(href) //释放掉blob对象
-  }
-}
 
 /**
  * 调用方式，页面引入storageMethod，传入local或者session
@@ -66,6 +15,52 @@ function downloadExportFile(blob, tagFileName, fileType) {
 function storageMethod(val) {
   const storageType = val === 'local' ? 'localStorage' : 'sessionStorage'
   return storage.getInstance({ storage: storageType })
+}
+
+/**
+ * 倒计时
+ * @param time 倒计时长
+ * @param valueChange 每次计算结束返回的计算结果
+ * @param callback 倒计时结束的回调函数
+ * @param originMsg 倒计时结束后，显示的内容，通过valueChange回调
+ */
+function countSeconds(time, valueChange, callback, originMsg) {
+  let res
+  res = setInterval(function() {
+    time = --time
+    if (time > 0) {
+      valueChange(`${originMsg}(${time}s)`)
+      // console.log('time couting..' + time);
+    } else {
+      valueChange(originMsg)
+      clearInterval(res)
+      return callback()
+    }
+  }, 1000)
+}
+
+/**
+ *下载导出文件
+ * @param blob 返回数据的blob对象或链接
+ * @param tagFileName 下载后文件名标记
+ * @param fileType 文件类 word(docx) excel(xlsx) ppt等
+ */
+function downloadExportFile(blob, tagFileName, fileType) {
+  let a = document.createElement('a')
+  let href = blob
+  if (typeof blob === 'string') {
+    a.target = '_blank'
+  } else {
+    href = window.URL.createObjectURL(blob) // 创建下载的链接
+  }
+  a.href = href
+  a.download = tagFileName + '.' + fileType // 下载后文件名
+  document.body.appendChild(a)
+  a.click() // 点击下载
+  document.body.removeChild(a) // 下载完成移除元素
+  if (typeof blob !== 'string') {
+    window.URL.revokeObjectURL(href) // 释放掉blob对象
+  }
 }
 
 /**
@@ -134,7 +129,7 @@ function calculateTwoNumber(arg1, arg2, type) {
  * @returns {string}
  */
 function numberFormat(number, decimals, dec_point, thousands_sep) {
-  number = (String(number)).replace(/[^0-9+-Ee.]/g, '')
+  number = String(number).replace(/[^0-9+-Ee.]/g, '')
   var n = !isFinite(Number(number)) ? 0 : Number(number),
     prec = !isFinite(Number(decimals)) ? 0 : Math.abs(decimals),
     sep = typeof thousands_sep === 'undefined' ? ',' : thousands_sep,
@@ -160,12 +155,12 @@ function numberFormat(number, decimals, dec_point, thousands_sep) {
 }
 
 /**
- * 函数节流
+ * 防抖
  * @param fn  执行的函数
- * @param delay  时间
+ * @param delay 延时，单位毫秒
  * @returns {Function}
  */
-function throttle(fn, delay) {
+function debounce(fn, delay) {
   let timer
   return function(...args) {
     if (timer) {
@@ -174,6 +169,23 @@ function throttle(fn, delay) {
     timer = setTimeout(() => {
       fn.apply(this, args)
     }, delay)
+  }
+}
+
+/**
+ * 节流
+ * @param {function} fn 待执行的函数
+ * @param {number} delay 延时，单位毫秒
+ */
+function throttle(fn, delay) {
+  let timer = null
+  return function() {
+    if (!timer) {
+      timer = setTimeout(() => {
+        fn.apply(this, arguments)
+        timer = null
+      }, delay)
+    }
   }
 }
 
@@ -359,70 +371,11 @@ function deepCopy(obj, cache = []) {
   return copy
 }
 
-// 重置菜单对象
-function resetMenuObj(menuObj) {
-  for (let key in menuObj) {
-    if (menuObj[key].hasOwnProperty('available')) {
-      menuObj[key].available = false
-    }
-    if (menuObj[key].hasOwnProperty('submenus')) {
-      resetMenuObj(menuObj[key].submenus)
-    }
-  }
-}
-
-function setMenuObj(menuObj, menuTree) {
-  // 登出操作不会重置菜单初始值
-  resetMenuObj(menuObj)
-
-  if (!Array.isArray(menuTree) || menuTree.lengeth === 0) {
-    return
-  }
-  const temp = []
-
-  function getMenuIds(dataTree) {
-    const length = dataTree.length
-    for (let i = 0; i < length; i++) {
-      const tempObj = {}
-      for (let key in dataTree[i]) {
-        if (typeof dataTree[i][key] !== 'object') {
-          tempObj[key] = dataTree[i][key]
-        } else {
-          getMenuIds(dataTree[i][key])
-        }
-      }
-      temp.push(tempObj)
-    }
-    return temp
-  }
-
-  const flatMenu = getMenuIds(menuTree)
-  flatMenu.sort((a, b) => {
-    return a.remark - b.remark
-  })
-
-  function traverse(dataObj) {
-    for (let key in dataObj) {
-      const tempObj = dataObj[key]
-      const menuKey = tempObj.key
-
-      const flatMenuLen = flatMenu.length
-      for (let i = 0; i < flatMenuLen; i++) {
-        if (flatMenu[i].remark === menuKey) {
-          tempObj.available = true
-          if (tempObj.hasOwnProperty('submenus')) {
-            traverse(tempObj.submenus)
-          }
-          break
-        }
-      }
-    }
-  }
-
-  traverse(menuObj)
-  // console.log(menuObj);
-}
-
+/**
+ * 引入所有的 vue 文件
+ * @param {string} context 源vue文件地址
+ * @returns object 文件映射对象
+ */
 function importAll(context) {
   const map = {}
 
@@ -435,10 +388,24 @@ function importAll(context) {
 }
 
 /**
+ * 引入所有的文件
+ * @param {*} context
+ * @returns
+ */
+function importIcon(context) {
+  let obj = {}
+  context.keys().forEach(key => {
+    let route = key.slice(2)
+    obj[route] = context(key)
+  })
+  return obj
+}
+
+/**
  * 展示开头和结尾的内容，中间隐藏
- * @param str  需要匹配的字符串
- * @param frontLen   开始位置
- * @param endLen   结束位置（倒数）
+ * @param str 需要匹配的字符串
+ * @param frontLen 开始位置
+ * @param endLen 结束位置（倒数）
  * @returns {string}
  */
 function hideMiddleReg(str, frontLen, endLen) {
@@ -453,40 +420,12 @@ function hideMiddleReg(str, frontLen, endLen) {
 /**
  * 生成随机数数
  */
-const uniqueIds = []
-function createUniqueId() {
-  const random = function() {
-    return Number(
-      Math.random()
-        .toString()
-        .substr(2)
-    ).toString(36) // 转换成十六进制
-  }
-  function createId() {
-    const num = random()
-    let _bool = false
-    uniqueIds.forEach(v => {
-      if (v === num) {
-        _bool = true
-      }
-    })
-    if (_bool) {
-      createId()
-    } else {
-      uniqueIds.push(num)
-      return num
-    }
-  }
-  return createId()
-}
-
-function importIcon(context) {
-  let obj = {}
-  context.keys().forEach(key => {
-    let route = key.slice(2)
-    obj[route] = context(key)
-  })
-  return obj
+function createRandom() {
+  return Number(
+    Math.random()
+      .toString()
+      .substring(2)
+  ).toString(36) // 转换成十六进制
 }
 
 /**
@@ -510,103 +449,12 @@ function getQueryVariable(variable) {
 }
 
 /**
- * 表格日期格式化
- * @param row
- * @param column
- * @param cellValue
- * @param type 格式YY-mm-dd HH:MM:SS
- * @returns {string|*}
+ * 添加序列号
+ * @param {number} index 当前页的序列
+ * @param {number} page 第几页
+ * @param {number} size 每页页数
+ * @returns 总的序列号
  */
-function formatDateMethod(row, column, cellValue, type) {
-  if (cellValue) {
-    return dateFormat(type, new Date(cellValue))
-  } else {
-    return ''
-  }
-}
-
-/**
- * 通用日期格式化
- * @param value
- * @param type 格式YY-mm-dd HH:MM:SS
- * @returns {string|*}
- */
-function changeDateMethod(value, type) {
-  if (value) {
-    return dateFormat(type, new Date(value))
-  } else {
-    return ''
-  }
-}
-
-/**
- * 表格金额格式化
- * @param row
- * @param column
- * @param cellValue
- * @param currency 币种
- * @param isFen 是否是分转元
- * @param removeZero 是否移除小数点末尾的0
- * @returns {string}
- */
-function formatAmountMethod(
-  row,
-  column,
-  cellValue,
-  currency,
-  { isFen = true, removeZero = false }
-) {
-  if (cellValue) {
-    let yuanAmount = isFen ? calculateTwoNumber(cellValue, '100', '/') : cellValue
-    let num = currency === 'JPY' ? 0 : 2
-    let returnValue = numberFormat(yuanAmount, num)
-    const regexp = /(?:\.0*|(\.\d+?)0+)$/
-    if (removeZero) {
-      return returnValue.replace(regexp, '$1')
-    } else {
-      return returnValue
-    }
-  } else {
-    return ''
-  }
-}
-
-function changeAmountMethod(value, currency, { isFen = true }) {
-  if (value) {
-    let yuanAmount = isFen ? calculateTwoNumber(value, '100', '/') : value
-    let num = currency === 'JPY' ? 0 : 2
-    return numberFormat(yuanAmount, num)
-  } else {
-    return ''
-  }
-}
-
-/**
- * 表格format通用方法
- * @param row
- * @param column
- * @param cellValue
- * @param arr
- * @param label
- * @param value
- * @returns {*}
- */
-function formatMethod(row, column, cellValue, arr, label, value) {
-  for (let i = 0; i < arr.length; i++) {
-    if (cellValue === arr[i][value]) {
-      return arr[i][label]
-    }
-  }
-}
-
-function changeMethod(cellValue, arr, label, value) {
-  for (let i = 0; i < arr.length; i++) {
-    if (cellValue === arr[i][value]) {
-      return arr[i][label]
-    }
-  }
-}
-
 function indexMethod(index, page, size) {
   return (page - 1) * size + (index + 1)
 }
@@ -616,25 +464,18 @@ export {
   downloadExportFile,
   storageMethod,
   numberFormat,
+  debounce,
   throttle,
   countBackward,
   calculateTwoNumber,
   getBase64,
   dataURLtoFile,
   deepCopy,
-  resetMenuObj,
-  setMenuObj,
   importAll,
   hideMiddleReg,
-  createUniqueId,
   compressImage,
+  createRandom,
   importIcon,
   getQueryVariable,
-  formatDateMethod,
-  changeDateMethod,
-  formatAmountMethod,
-  formatMethod,
-  changeAmountMethod,
-  changeMethod,
   indexMethod
 }

@@ -5,13 +5,14 @@
  * @return void
  */
 function downloadByElemA({ url, name } = {}) {
-  const elemA = document.createElement('a')
+  let elemA = document.createElement('a')
 
   elemA.href = url
   elemA.download = name
   document.body.appendChild(elemA)
   elemA.click()
   document.body.removeChild(elemA)
+  elemA = null
 }
 
 /**

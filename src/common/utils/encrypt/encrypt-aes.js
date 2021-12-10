@@ -15,20 +15,6 @@ function aesEncrypt(data, secretKey) {
   return CryptoJS.AES.encrypt(encryptedStr, secretKey).toString()
 }
 
-// function aesDecrypt({ data, isObject = true, secretKey }) {
-//   if (!data || !secretKey) {
-//     return ''
-//   }
-//   console.log(data, secretKey)
-//   const bytes = CryptoJS.AES.decrypt(data, secretKey)
-//   const plainText = bytes.toString(CryptoJS.enc.Utf8)
-
-//   if (isObject === true) {
-//     return JSON.parse(plainText)
-//   }
-//   console.log('plainText', plainText)
-//   return plainText
-// }
 /**
  * AES 解密
  * @param text 待解密数据
