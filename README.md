@@ -68,4 +68,5 @@
 // scripts/index.js
 node scripts/index.js --mode watch --src antd/pc
 node scripts/index.js --mode build --src antd/pc
+// http://localhost:8011/html/antd/index.html
 ```

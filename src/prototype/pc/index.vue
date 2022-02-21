@@ -5,7 +5,12 @@
       <div class="text-muted">{{ mikuAlt }}</div>
     </div>
     <div class="input">
-      <input ref="input" type="file" @change="uploadFile" />
+      <select v-model="encoding" @chang="changeFileEncoding">
+        <option v-for="item in encodingList" :value="item.value" :key="item.value">
+          {{ item.label }}
+        </option>
+      </select>
+      <input ref="file" type="file" @change="uploadFile" />
     </div>
   </div>
 </template>
@@ -14,6 +19,7 @@
 import mikuImage001 from './static/image/miku_role001.jpg'
 import mikuImage002 from './static/image/miku_role002.jpg'
 import displayBuildInfoMixin from '@/common/mixins/displayBuildInfoMixin'
+import { saveAs } from '@/common/utils/download'
 
 const bannerList = [
   { image: mikuImage001, alt: 'miku 001' },
@@ -26,7 +32,13 @@ export default {
   data() {
     return {
       mikuImage: mikuImage001,
-      mikuAlt: 'miku 001'
+      mikuAlt: 'miku 001',
+      encodingList: [
+        { label: 'GB2312', value: 'GB2312' },
+        { label: 'UTF-8', value: 'UTF-8' },
+        { label: 'asni', value: 'asni' }
+      ],
+      encoding: 'UTF-8'
     }
   },
   methods: {
@@ -57,6 +69,10 @@ export default {
       cmdList.forEach(item => {
         console.log(item)
       })
+    },
+    changeFileEncoding(val) {
+      console.log(val)
+      this.$refs.file.$el.value = ''
     },
     // 解析地址
     parseSiteInfo(context) {
@@ -98,15 +114,50 @@ export default {
       })
       console.log(tempList, JSON.stringify(tempList))
     },
+    // 解析地址码
+    parseAddrCode(context) {
+      const data = context.split(/\n/).filter(item => item !== '\n')
+      // data.splice(0, 2)
+      data.shift()
+      const res = []
+      let children = []
+      data.forEach(item => {
+        let tempArray = item.split(/\t/).filter(subItem => subItem !== '\t')
+        if (tempArray.length > 2) {
+          tempArray = tempArray.slice(0, 2)
+        } else if (tempArray.length < 2) {
+          console.log(tempArray)
+          return
+        }
+
+        const tempObj = {
+          label: '',
+          value: ''
+        }
+        if (tempArray[1].startsWith(' ')) {
+          tempObj.label = tempArray[1].replace(/\s/g, '')
+          tempObj.value = tempArray[0]
+          children.push(tempObj)
+        } else {
+          children = []
+          tempObj.label = tempArray[1]
+          tempObj.value = tempArray[0]
+          tempObj.children = children
+          res.push(tempObj)
+        }
+      })
+      return res
+    },
     // 上传文件
     uploadFile() {
-      const files = this.$refs.input.files
+      const files = this.$refs.file.files
 
       if (files.length === 0) {
         return
       }
       const targetFile = files[0]
       const reader = new FileReader()
+      const vm = this
 
       reader.onload = function(e) {
         // e ProgressEvent
@@ -114,8 +165,13 @@ export default {
 
         // parseContext
         console.log(context)
+        const result = vm.parseAddrCode(context)
+        var blob = new Blob([JSON.stringify(result, null, 2)], {
+          type: 'application/json,charset=utf-8;'
+        })
+        saveAs(blob, 'addr.json')
       }
-      reader.readAsText(targetFile)
+      reader.readAsText(targetFile, this.encoding)
     }
   }
 }

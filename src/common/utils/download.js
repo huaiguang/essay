@@ -4,7 +4,7 @@
  * @param  {[name] options.name }   [the name of download file]
  * @return void
  */
-function downloadByElemA({ url, name } = {}) {
+export function downloadByElemA({ url, name } = {}) {
   let elemA = document.createElement('a')
 
   elemA.href = url
@@ -21,7 +21,7 @@ function downloadByElemA({ url, name } = {}) {
  * @param  {[string]} fileName [the name of file]
  * @return {[void]}     [description]
  */
-function savePic(url, fileName) {
+export function savePic(url, fileName) {
   const img = new Image(),
     canvas = document.createElement('canvas')
 
@@ -50,7 +50,7 @@ function savePic(url, fileName) {
  * @param  {[string]} name [the name of the download image]
  * @return void
  */
-function downLocalImage(img, name) {
+export function downLocalImage(img, name) {
   const canvas = document.createElement('canvas')
 
   canvas.width = img.width
@@ -70,13 +70,15 @@ function downLocalImage(img, name) {
  * @param  {[name]} name [the name of the download file]
  * @return void
  */
-function saveAs(data, name) {
-  var urlObject = window.URL || window.webkitURL || window,
-    export_blob = new Blob([data])
-  // download the file
+export function saveAs(data, name) {
+  const urlObject = window.URL || window.webkitURL || window
+  const downloadUrl = new Blob([data])
 
   downloadByElemA({
-    url: urlObject.createObjectURL(export_blob),
+    url: urlObject.createObjectURL(downloadUrl),
     name: name
+  })
+  setTimeout(() => {
+    window.revokeObjectUrl(downloadUrl)
   })
 }
