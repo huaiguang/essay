@@ -148,6 +148,22 @@ export default {
       })
       return res
     },
+    // 解析枚举
+    parseEnum(context) {
+      const data = context.split(/(\n|\t)/).filter(item => item !== '\n' && item !== '\t')
+      const res = []
+      let tempObj = {}
+      data.forEach((item, index) => {
+        if (index % 2 === 0) {
+          tempObj.value = item
+        } else {
+          tempObj.label = item
+          res.push(tempObj)
+          tempObj = {}
+        }
+      })
+      return res
+    },
     // 上传文件
     uploadFile() {
       const files = this.$refs.file.files
@@ -156,6 +172,7 @@ export default {
         return
       }
       const targetFile = files[0]
+      const fileName = targetFile.name
       const reader = new FileReader()
       const vm = this
 
@@ -163,13 +180,18 @@ export default {
         // e ProgressEvent
         const context = e.target.result
 
-        // parseContext
+        const result = vm.parseEnum(context)
+        console.group()
+        // console.log('result\n', result) \n // 占据了一个空格
+        /* console.log('origin: ')
         console.log(context)
-        const result = vm.parseAddrCode(context)
+        console.log('result: ')
+        console.log(result)
+        console.groupEnd() */
         var blob = new Blob([JSON.stringify(result, null, 2)], {
           type: 'application/json,charset=utf-8;'
         })
-        saveAs(blob, 'addr.json')
+        saveAs(blob, fileName + '.json')
       }
       reader.readAsText(targetFile, this.encoding)
     }

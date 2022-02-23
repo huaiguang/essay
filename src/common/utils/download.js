@@ -59,8 +59,8 @@ export function downLocalImage(img, name) {
 
   context.drawImage(img, 0, 0, img.width, img.height)
   downloadByElemA({
-    url: canvas.toDataURL('image/png'),
-    name: name
+    name: name,
+    url: canvas.toDataURL('image/png')
   })
 }
 
@@ -71,14 +71,15 @@ export function downLocalImage(img, name) {
  * @return void
  */
 export function saveAs(data, name) {
-  const urlObject = window.URL || window.webkitURL || window
-  const downloadUrl = new Blob([data])
+  const urlObject = window.URL || window.webkitURL
+  const objectBlob = new Blob([data])
+  const objectURL = urlObject.createObjectURL(objectBlob)
 
   downloadByElemA({
-    url: urlObject.createObjectURL(downloadUrl),
-    name: name
+    name: name,
+    url: objectURL
   })
   setTimeout(() => {
-    window.revokeObjectUrl(downloadUrl)
+    urlObject.revokeObjectURL(objectURL)
   })
 }
