@@ -24,7 +24,8 @@ const config = webpackBaseConfig({
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': require('../config/dev.env')
+      // 'process.env': require('../config/dev.env'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     })
   ],
   devServer: {
