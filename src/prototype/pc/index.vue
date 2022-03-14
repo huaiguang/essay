@@ -20,7 +20,7 @@ import mikuImage001 from './static/image/miku_role001.jpg'
 import mikuImage002 from './static/image/miku_role002.jpg'
 import displayBuildInfoMixin from '@/common/mixins/displayBuildInfoMixin'
 import { saveAs } from '@/common/utils/download'
-import { parseFields } from './static/js/parseFile'
+import { parseAPIFields, parseEnum, parseCodeFields } from './static/js/parseFile'
 
 const bannerList = [
   { image: mikuImage001, alt: 'miku 001' },
@@ -76,7 +76,7 @@ export default {
         // e ProgressEvent
         const context = e.target.result
 
-        const result = parseFields(context)
+        const result = parseCodeFields(context)
         console.group()
         console.log('origin: ')
         console.log(context)

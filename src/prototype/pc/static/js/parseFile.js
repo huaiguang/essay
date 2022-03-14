@@ -13,7 +13,7 @@ function handleFileLastLine(list) {
  * @param {string} context
  * @returns Array
  */
-export function parseFields(context) {
+export function parseAPIFields(context) {
   const data = context.split(/\n/) // split to rows
   handleFileLastLine(data)
   const target = []
@@ -49,6 +49,33 @@ export function parseEnum(context) {
     }
   })
   return res
+}
+
+/**
+ * parse text read to fields
+ * @param {string} context
+ * @returns Array
+ */
+export function parseCodeFields(context) {
+  const data = context.split(/\n/) // split to rows
+  handleFileLastLine(data)
+  const target = []
+
+  data.forEach(item => {
+    const regBracket = /\(([^()]+)\)/
+    const matchResult = item.match(regBracket)
+    if (!matchResult) {
+      return
+    }
+    const regResult = matchResult[1].replace(/\"/g, '').split(',')
+    const tempObj = {
+      label: regResult[1].replace(/\s+/, ''),
+      value: regResult[0]
+    }
+
+    target.push(tempObj)
+  })
+  return target
 }
 
 /**
