@@ -11,8 +11,9 @@ window.onload = function() {
     }
   }
 }
+
 function checkTimeout() {
-  currentTime = Date.now() //更新当前时间
+  currentTime = Date.now()
   lastTime = storageMethod('local').get('lastTime')
   if (storageMethod('local').get('lastTime') > 0) {
     if (currentTime - lastTime > timeOut) {
@@ -23,5 +24,5 @@ function checkTimeout() {
   }
 }
 
-/* 定时器 间隔30秒检测是否长时间未操作页面 */
+// 定时器 间隔30秒检测是否长时间未操作页面
 window.setInterval(checkTimeout, 30000)

@@ -54,7 +54,7 @@ function dateFormat(date = new Date(), pattern = DEFAULT_PATTERN) {
  * @param {string} pattern required format date string, as 'yyyy-MM-dd hh:mm:ss', and the length must be same as the length of dateString
  * @return {date} the parsed date
  */
-function dateParse(dateString, pattern) {
+function dateStringFormat(dateString, pattern) {
   var matchs1 = pattern.match(SIGN_REGEXP),
     matchs2 = dateString.match(/(\d)+/g)
 
@@ -92,4 +92,4 @@ function dateParse(dateString, pattern) {
   return null
 }
 
-export { dateFormat, dateParse }
+export { dateFormat, dateStringFormat }
