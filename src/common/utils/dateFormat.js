@@ -3,8 +3,8 @@
  * 正则匹配时，默认是贪婪模式
  */
 var SIGN_REGEXP = /([yMdhms])(\1*)/g,
-    // 默认的时间格式
-    DEFAULT_PATTERN = 'yyyy-MM-dd'
+  // 默认的时间格式
+  DEFAULT_PATTERN = 'yyyy-MM-dd'
 
 /**
  * 补全日期中单个时间前面的0，例如一月 '01'
@@ -13,8 +13,8 @@ var SIGN_REGEXP = /([yMdhms])(\1*)/g,
  * @return {[string]}     [add extra 0 to the left of the s]
  */
 function padding(s, len) {
-  var newLen = len - String(s).length,
-      newStr
+  var newStr = String(s),
+    newLen = len - newStr.length
 
   for (var i = 0; i < newLen; i++) {
     newStr = '0' + s
@@ -28,9 +28,7 @@ function padding(s, len) {
  * @param {string} pattern the required format date string, as 'yyyy-MM-dd hh:mm:ss'
  * @return {string}
  */
-function dateFormat(date, pattern) {
-  date = date || new Date()
-  pattern = pattern || DEFAULT_PATTERN
+function dateFormat(date = new Date(), pattern = DEFAULT_PATTERN) {
   return pattern.replace(SIGN_REGEXP, function($0) {
     switch ($0.charAt(0)) {
       case 'y':
@@ -45,6 +43,7 @@ function dateFormat(date, pattern) {
         return padding(date.getMinutes(), $0.length)
       case 's':
         return padding(date.getSeconds(), $0.length)
+      // no default
     }
   })
 }
@@ -57,14 +56,14 @@ function dateFormat(date, pattern) {
  */
 function dateParse(dateString, pattern) {
   var matchs1 = pattern.match(SIGN_REGEXP),
-      matchs2 = dateString.match(/(\d)+/g)
+    matchs2 = dateString.match(/(\d)+/g)
 
   if (matchs1.length === matchs2.length) {
     var _date = new Date(1970, 0, 1)
 
     for (var i = 0; i < matchs1.length; i++) {
       var _int = parseInt(matchs2[i], 10),
-          sign = matchs1[i]
+        sign = matchs1[i]
 
       switch (sign.charAt(0)) {
         case 'y':
@@ -85,6 +84,7 @@ function dateParse(dateString, pattern) {
         case 's':
           _date.setSeconds(_int)
           break
+        // no default
       }
     }
     return _date

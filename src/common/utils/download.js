@@ -4,14 +4,15 @@
  * @param  {[name] options.name }   [the name of download file]
  * @return void
  */
-function downloadByElemA({ url, name } = {}) {
-  const elemA = document.createElement('a')
+export function downloadByElemA({ url, name } = {}) {
+  let elemA = document.createElement('a')
 
   elemA.href = url
   elemA.download = name
   document.body.appendChild(elemA)
   elemA.click()
   document.body.removeChild(elemA)
+  elemA = null
 }
 
 /**
@@ -20,9 +21,9 @@ function downloadByElemA({ url, name } = {}) {
  * @param  {[string]} fileName [the name of file]
  * @return {[void]}     [description]
  */
-function savePic(url, fileName) {
+export function savePic(url, fileName) {
   const img = new Image(),
-        canvas = document.createElement('canvas')
+    canvas = document.createElement('canvas')
 
   img.onload = function() {
     // this 指向 img 对象，如下：
@@ -35,8 +36,8 @@ function savePic(url, fileName) {
     context.drawImage(this, 0, 0)
 
     downloadByElemA({
-      'url': canvas.toDataURL('image/png'),
-      'name': fileName
+      url: canvas.toDataURL('image/png'),
+      name: fileName
     })
   }
   img.crossOrigin = 'Anonymous'
@@ -49,7 +50,7 @@ function savePic(url, fileName) {
  * @param  {[string]} name [the name of the download image]
  * @return void
  */
-function downLocalImage(img, name) {
+export function downLocalImage(img, name) {
   const canvas = document.createElement('canvas')
 
   canvas.width = img.width
@@ -58,8 +59,8 @@ function downLocalImage(img, name) {
 
   context.drawImage(img, 0, 0, img.width, img.height)
   downloadByElemA({
-    'url': canvas.toDataURL('image/png'),
-    'name': name
+    name: name,
+    url: canvas.toDataURL('image/png')
   })
 }
 
@@ -69,13 +70,16 @@ function downLocalImage(img, name) {
  * @param  {[name]} name [the name of the download file]
  * @return void
  */
-function saveAs(data, name) {
-  var urlObject = window.URL || window.webkitURL || window,
-      export_blob = new Blob([data])
-    // download the file
+export function saveAs(data, name) {
+  const urlObject = window.URL || window.webkitURL
+  const objectBlob = new Blob([data])
+  const objectURL = urlObject.createObjectURL(objectBlob)
 
   downloadByElemA({
-    'url': urlObject.createObjectURL(export_blob),
-    'name': name
+    name: name,
+    url: objectURL
+  })
+  setTimeout(() => {
+    urlObject.revokeObjectURL(objectURL)
   })
 }

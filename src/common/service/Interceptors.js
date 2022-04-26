@@ -1,29 +1,12 @@
-class Interceptors = (
-  {
-    beforeRequest = [],
-    afterResponse = []
-  } = {}
-) {
-  this.beforeRequest = [
-    config => {
-      if (beforeRequest[0]) {
-        beforeRequest[0]()
-      }
-    }
-  ]
-}
-
-class Interceptors = {
-  constructor(
-    beforeRequest = [],
-    afterResponse = []
-  ) {
+class Interceptors {
+  constructor(beforeRequest = [], afterResponse = []) {
     this.beforeRequest = [
       config => {
         if (beforeRequest[0]) {
           beforeRequest[0](config)
         } else {
-          const token = localStorage.get('token')
+          const token = localStorage.getItem('token')
+
           if (token) {
             config.headers['User-Token'] = ''
           }
@@ -48,10 +31,17 @@ class Interceptors = {
         }
       },
       error => {
+        // console.log('timeout', error, error.code, error.message)
+        // error.code    ECONNABORTED
+        // error.message timeout of 3000ms exceeded
         if (afterResponse[1]) {
           afterResponse[1](error)
         } else {
-          if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1 && !error.config._retry) {
+          if (
+            error.code === 'ECONNABORTED' &&
+            error.message.indexOf('timeout') !== -1 &&
+            !error.config._retry
+          ) {
             error.message = '请求超时，请稍后再试！'
             return Promise.reject(error)
           }

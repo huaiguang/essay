@@ -1,26 +1,29 @@
 module.exports = {
-  'root': true,
-  'env': {
-    'node': true
+  root: true,
+  env: {
+    node: true
   },
-  'extends': ['plugin:vue/essential', 'plugin:vue/recommended'],
-  'parserOptions': {
-    'parser': 'babel-eslint'
+  extends: ['plugin:vue/recommended'],
+  parserOptions: {
+    parser: 'babel-eslint'
   },
-  'rules': {
-    'indent': [
+  globals: {
+    builtDate: 'readonly',
+    window: 'readonly'
+  },
+  rules: {
+    indent: [
       'error',
       2,
       {
-        'SwitchCase': 1,
-        'VariableDeclarator': 'first',
-        'MemberExpression': 1,
-        'FunctionDeclaration': { 'body': 1, 'parameters': 2 },
-        'CallExpression': { 'arguments': 1 },
-        'ArrayExpression': 1,
-        'ObjectExpression': 1,
-        'ImportDeclaration': 1,
-        'ignoreComments': true
+        SwitchCase: 1,
+        VariableDeclarator: 1,
+        MemberExpression: 1,
+        FunctionDeclaration: { body: 1, parameters: 1 },
+        CallExpression: { arguments: 1 },
+        ArrayExpression: 1,
+        ObjectExpression: 1,
+        ImportDeclaration: 1
       }
     ],
     // "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
@@ -37,26 +40,26 @@ module.exports = {
       2,
       '1tbs',
       {
-        'allowSingleLine': true
+        allowSingleLine: true
       }
     ],
     // 峰驼命名格式
-    'camelcase': 1,
+    camelcase: 1,
     // 数组和对象键值对最后一个逗号， never参数：不能带末尾的逗号, always参数：必须带末尾的逗号，
     // always-multiline：多行模式必须带逗号，单行模式不能带逗号
     // 控制逗号前后的空格
     'comma-spacing': [
       2,
       {
-        'before': false,
-        'after': true
+        before: false,
+        after: true
       }
     ],
     // 控制逗号在行尾出现还是在行首出现
     // http://eslint.org/docs/rules/comma-style
     'comma-style': [2, 'last'],
     // 圈复杂度
-    'complexity': [2, 9],
+    complexity: 2,
     // 以方括号取对象属性时，[ 后面和 ] 前面是否需要空格, 可选参数 never, always
     'computed-property-spacing': [2, 'never'],
     // 强制方法必须返回值，TypeScript强类型，不配置
@@ -83,13 +86,13 @@ module.exports = {
     'dot-notation': [
       2,
       {
-        'allowKeywords': true
+        allowKeywords: true
       }
     ],
     // 文件末尾强制换行
     'eol-last': 2,
     // 使用 === 替代 ==
-    'eqeqeq': [2, 'allow-null'],
+    eqeqeq: [2, 'allow-null'],
     // 方法表达式是否需要命名
     'func-names': 0,
     // 方法定义风格，参数：
@@ -113,16 +116,17 @@ module.exports = {
     'no-dupe-keys': 2, //在创建对象字面量时不允许键重复 {a:1,a:1}
     'no-dupe-args': 2, //函数参数不能重复
     'no-duplicate-case': 2, //switch中的case标签不能重复
-    'no-else-return': 2, //如果if语句里面有return,后面不能跟else语句
-    'no-empty': 2, //块语句中的内容不能为空
+    // 如果if语句里面有return,后面不能跟else语句; 事实上只有每个分支都有return才应该有效
+    'no-else-return': 0,
+    'no-empty': [2, { allowEmptyCatch: true }], //块语句中的内容不能为空
     'no-empty-character-class': 2, //正则表达式中的[]内容不能为空
     'no-eq-null': 2, //禁止对null使用==或!=运算符
     'no-eval': 1, //禁止使用eval
     'no-ex-assign': 2, //禁止给catch语句中的异常参数赋值
-    'no-extend-native': 2, //禁止扩展native对象
+    'no-extend-native': 0, //禁止扩展native对象
     'no-extra-bind': 2, //禁止不必要的函数绑定
     'no-extra-boolean-cast': 2, //禁止不必要的bool转换
-    'no-extra-parens': 2, //禁止非必要的括号
+    // 'no-extra-parens': 2, //禁止非必要的括号
     'no-extra-semi': 2, //禁止多余的冒号
     'no-fallthrough': 1, //禁止switch穿透
     'no-floating-decimal': 2, //禁止省略浮点数中的0 .5 3.
@@ -132,7 +136,7 @@ module.exports = {
     'no-inline-comments': 0, //禁止行内备注
     'no-inner-declarations': [2, 'functions'], //禁止在块语句中使用声明（变量或函数）
     'no-invalid-regexp': 2, //禁止无效的正则表达式
-    'no-invalid-this': 2, //禁止无效的this，只能用在构造器，类，对象字面量
+    'no-invalid-this': 1, //禁止无效的this，只能用在构造器，类，对象字面量
     'no-irregular-whitespace': 2, //不能有不规则的空格
     'no-iterator': 2, //禁止使用__iterator__ 属性
     'no-label-var': 2, //label名不能与var声明的变量名相同
@@ -148,13 +152,14 @@ module.exports = {
     'no-multiple-empty-lines': [
       1,
       {
-        'max': 2
+        max: 2
       }
     ], //空行最多不能超过2行
     'no-native-reassign': 2, //不能重写native对象
     'no-negated-in-lhs': 2, //in 操作符的左边不能有!
     'no-nested-ternary': 0, //禁止使用嵌套的三目运算
-    'no-new': 1, //禁止在使用new构造一个实例后不赋值
+    // 在例如 new Vue() 上会报错
+    // 'no-new': 1, //禁止在使用new构造一个实例后不赋值
     'no-new-func': 1, //禁止使用new Function
     'no-new-object': 2, //禁止使用new Object()
     'no-new-require': 2, //禁止使用new require
@@ -186,17 +191,22 @@ module.exports = {
     'no-throw-literal': 2, //禁止抛出字面量错误 throw "error";
     'no-undef': 1, //不能有未定义的变量
     'no-undef-init': 2, //变量初始化时不能直接给它赋值为undefined
-    'no-undefined': 1, //不能使用undefined
+    'no-undefined': 0, //不能使用undefined
     'no-unexpected-multiline': 2, //避免多行表达式
-    'no-underscore-dangle': 1, //标识符不能以_开头或结尾
-    'no-unneeded-ternary': 2, //禁止不必要的嵌套 var isYes = answer === 1 ? true : false;
+    'no-underscore-dangle': 0, // 标识符不能以_开头或结尾
+    'no-unneeded-ternary': 2, // 禁止不必要的嵌套 var isYes = answer === 1 ? true : false;
     'no-unreachable': 2, //不能有无法执行的代码
-    'no-unused-expressions': 2, //禁止无用的表达式
+    'no-unused-expressions': [
+      2,
+      {
+        allowShortCircuit: true
+      }
+    ], //禁止无用的表达式
     'no-unused-vars': [
       1,
       {
-        'vars': 'local',
-        'args': 'all'
+        vars: 'local',
+        args: 'all'
       }
     ], //不能有声明后未被使用的变量或参数
     'no-use-before-define': 2, //未定义前不能使用
@@ -206,8 +216,8 @@ module.exports = {
     'no-warning-comments': [
       1,
       {
-        'terms': ['todo', 'fixme', 'xxx'],
-        'location': 'start'
+        terms: ['todo', 'fixme', 'xxx'],
+        location: 'start'
       }
     ], //不能有警告备注
     'no-with': 2, //禁用with
@@ -215,7 +225,7 @@ module.exports = {
     'arrow-spacing': 0, //=>的前/后括号
     'callback-return': 1, //避免多次调用回调什么的
     'comma-dangle': [2, 'never'], //对象字面量项尾不能有逗号
-    'curly': [2, 'all'], //必须使用 if(){} 中的{}
+    curly: [2, 'all'], //必须使用 if(){} 中的{}
     'default-case': 1, //switch语句最后必须有default
     'generator-star-spacing': 0, //生成器函数*的前后空格
     'guard-for-in': 0, //for in循环要用if语句过滤
@@ -225,8 +235,8 @@ module.exports = {
     'key-spacing': [
       0,
       {
-        'beforeColon': false,
-        'afterColon': true
+        beforeColon: false,
+        afterColon: true
       }
     ], //对象字面量中冒号的前后空格
     'lines-around-comment': 0, //行前/行后备注
@@ -235,28 +245,35 @@ module.exports = {
     'max-nested-callbacks': [0, 2], //回调嵌套深度
     'max-params': [0, 3], //函数最多只能有3个参数
     'max-statements': [0, 10], //函数内最多有几个声明
-    'new-cap': 2, //函数名首行大写必须使用new方式调用，首行小写必须用不带new方式调用
+    // 函数名首行大写必须使用new方式调用，首行小写必须用不带new方式调用
+    'new-cap': 1,
     'new-parens': 2, //new时必须加小括号
-    'newline-after-var': 2, //变量声明后是否需要空一行
+    // [deprecated]
+    // 'newline-after-var': 2, //变量声明后是否需要空一行
+    // 'padding-line-between-statements': [
+    //   'error',
+    //   { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+    //   { blankLine: 'any', prev: ['const', 'let', 'var'], next: ['const', 'let', 'var'] }
+    // ],
     'object-curly-spacing': [0, 'never'], //大括号内是否允许不必要的空格
     'object-shorthand': 0, //强制对象字面量缩写语法
-    'one-var': 1, //连续声明
+    'one-var': 0, //连续声明
     'operator-assignment': [0, 'always'], //赋值运算符 += -=什么的
     'operator-linebreak': [2, 'after'], //换行时运算符在行尾还是行首
     'padded-blocks': 0, //块语句内行首行尾是否要空行
     'prefer-const': 0, //首选const
     'prefer-spread': 0, //首选展开运算
     'prefer-reflect': 0, //首选Reflect的方法
-    'quotes': [2, 'single'], //引号类型 `` "" ''
-    'radix': 2, //parseInt必须指定第二个参数
+    quotes: [2, 'single'], //引号类型 `` "" ''
+    radix: 2, //parseInt必须指定第二个参数
     'id-match': 0, //命名检测
     'require-yield': 0, //生成器函数必须有yield
-    'semi': [2, 'never'], //语句强制不添加分号
+    semi: [2, 'never'], //语句强制不添加分号
     'semi-spacing': [
       0,
       {
-        'before': false,
-        'after': true
+        before: false,
+        after: true
       }
     ], //分号前后空格
     'sort-vars': 0, //变量声明时排序
@@ -269,28 +286,23 @@ module.exports = {
     'space-unary-ops': [
       0,
       {
-        'words': true,
-        'nonwords': false
+        words: true,
+        nonwords: false
       }
     ], //一元运算符的前/后要不要加空格
     'spaced-comment': 0, //注释风格不要有空格什么的
-    'strict': 2, //使用严格模式
+    strict: 2, //使用严格模式
     'use-isnan': 2, //禁止比较时使用NaN，只能用isNaN()
     'valid-jsdoc': 0, //jsdoc规则
     'valid-typeof': 2, //必须使用合法的typeof的值
     'wrap-iife': [2, 'inside'], //立即执行函数表达式的小括号风格
     'wrap-regex': 0, //正则表达式字面量用小括号包起来
-    'yoda': [2, 'never'] //禁止尤达条件
-  },
-  'overrides': [
-    {
-      'files': [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)'
-      ],
-      'env': {
-        'mocha': true
-      }
-    }
-  ]
+    yoda: [2, 'never'], //禁止尤达条件
+    'vue/html-self-closing': 0,
+    'vue/max-attributes-per-line': 0,
+    'vue/singleline-html-element-content-newline': 0,
+    'vue/attributes-order': 0,
+    // deprecated
+    'vue/no-reserved-keys': 0
+  }
 }

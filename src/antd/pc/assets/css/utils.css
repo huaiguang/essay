@@ -1,0 +1,20 @@
+.red {
+  color: red;
+}
+
+.title {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}

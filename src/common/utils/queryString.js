@@ -5,8 +5,8 @@
  */
 function getQueryStringByName(name) {
   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i'),
-      r = window.location.search.substr(1).match(reg),
-      context = ''
+    r = window.location.search.substr(1).match(reg),
+    context = ''
 
   if (r !== null) {
     context = r[2]

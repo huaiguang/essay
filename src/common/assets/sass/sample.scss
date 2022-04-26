@@ -2,10 +2,10 @@
   @if ($direction == top) {
     border-color: transparent transparent $color transparent;
     border-style: dashed dashed solid dashed;
-  } @else if ($direction: == right) {
+  } @else if ($direction == right) {
     border-color: transparent transparent transparent $color;
     border-style: dashed dashed dashed solid;
-  } @else if ($direction:  == bottom) {
+  } @else if ($direction  == bottom) {
     border-color: $color transparent transparent transparent;
     border-style: solid dashed dashed dashed;
   } @else {
@@ -16,8 +16,4 @@
   height: 0;
   overflow: hidden;
   border-width: $size;
-}
-
-.demo {
-  @include triangle(left);
 }
